@@ -110,6 +110,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         button_start_pause.setText("START");
         insertInDB();
         generateXml();
+
     }
 
     @Override
@@ -151,6 +152,9 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         int id = trajetDbHandler.add(trajet, parcours);
         trajet.setId(id);
         parcours.addTrajet(trajet);
+        if(parcours.getIdTrajetReference() == -1){
+            parcours.setIdTrajetReference(id);
+        }
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(this);
         parcoursDbHandler.update(parcours);
     }

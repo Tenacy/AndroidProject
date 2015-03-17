@@ -16,8 +16,12 @@ import fr.unicaen.thiblef.gpsproject.util.Format;
  * Created by Thibault on 06/03/2015.
  */
 public class TrajetArrayAdapter extends ArrayAdapter {
-    public TrajetArrayAdapter(Context context, int idLayout, List<Trajet> trajets) {
+
+    private int idTrajetReference;
+
+    public TrajetArrayAdapter(Context context, int idLayout, List<Trajet> trajets, int idTrajetReference) {
         super(context, idLayout, trajets);
+        this.idTrajetReference = idTrajetReference;
     }
 
     @Override
@@ -29,7 +33,11 @@ public class TrajetArrayAdapter extends ArrayAdapter {
         }
 
         TextView trajet_date = (TextView) convertView.findViewById(R.id.trajet_date);
-        trajet_date.setText(Format.convertToDate(trajet.getDate()));
+        if(trajet.getId() == this.idTrajetReference){
+            trajet_date.setText(Format.convertToDate(trajet.getDate()) + " (Ref)");
+        } else {
+            trajet_date.setText(Format.convertToDate(trajet.getDate()));
+        }
 
         TextView trajet_distance = (TextView) convertView.findViewById(R.id.trajet_distance);
         trajet_distance.setText(Format.convertToKm(trajet.getDistance()));

@@ -109,8 +109,11 @@ public class TrajetsListActivity extends ActionBarActivity {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_trajet_new:
-                Intent trajet_intent = new Intent(this, TrajetActivity.class);
-                trajet_intent.putExtra(TrajetActivity.ARG_PARCOURS_ID, parcours.getId());
+                //Intent trajet_intent = new Intent(this, TrajetActivity.class);
+                //trajet_intent.putExtra(TrajetActivity.ARG_PARCOURS_ID, parcours.getId());
+
+                Intent trajet_intent = new Intent(this, GPSActivity.class);
+                trajet_intent.putExtra(GPSActivity.ARG_PARCOURS_ID, parcours.getId());
                 startActivity(trajet_intent);
                 return true;
             case  android.R.id.home:

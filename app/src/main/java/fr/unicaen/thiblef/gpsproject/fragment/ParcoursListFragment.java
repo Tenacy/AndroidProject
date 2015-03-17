@@ -42,7 +42,7 @@ public class ParcoursListFragment extends ListFragment {
      * The fragment's current callback object, which is notified of list item
      * clicks.
      */
-    private Callbacks mCallbacks = parcoursCallback;
+    private Callbacks mCallbacks;
 
     /**
      * The current activated item position. Only used on tablets.
@@ -60,24 +60,6 @@ public class ParcoursListFragment extends ListFragment {
          */
         public void onItemSelected(Parcours parcours);
 
-        //public void onItemLongClick(Parcours parcours);
-    }
-
-    /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks parcoursCallback = new Callbacks() {
-        @Override
-        public void onItemSelected(Parcours parcours) {
-        }
-    };
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ParcoursListFragment() {
     }
 
     @Override
@@ -125,19 +107,10 @@ public class ParcoursListFragment extends ListFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-
-        // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = parcoursCallback;
-    }
-
-    @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
         Parcours parcours = (Parcours) getListView().getAdapter().getItem(position);
         mCallbacks.onItemSelected(parcours);
-
     }
 
 
@@ -168,16 +141,17 @@ public class ParcoursListFragment extends ListFragment {
         } else {
             getListView().setItemChecked(position, true);
         }
-
         mActivatedPosition = position;
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("Menu Title");
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        Parcours parcours = (Parcours) getListView().getAdapter().getItem(info.position);
+        menu.setHeaderTitle("Parcours "+ parcours.getName());
         menu.add(0, v.getId(), 0, "Supprimer");
-        menu.add(0, v.getId(), 0, "Modifier nom du parcours");
+        menu.add(0, v.getId(), 0, "Modifier le nom du parcours");
     }
 
     @Override
@@ -189,8 +163,12 @@ public class ParcoursListFragment extends ListFragment {
             parcoursDbHandler.delete(parcours);
             this.loadParcoursList();
             Toast.makeText(this.getActivity(), "Parcours "+parcours.getName()+" supprimé!", Toast.LENGTH_SHORT).show();
-        } else if (item.getTitle().equals("Modifier nom du parcours")) {
-            Toast.makeText(this.getActivity(), "MODIF", Toast.LENGTH_SHORT).show();
+        } else if (item.getTitle().equals("Modifier le nom du parcours")) {
+            DialogFragment dialog = new UpdateParcoursFragment();
+            Bundle args = new Bundle();
+            args.putInt("id", parcours.getId());
+            dialog.setArguments(args);
+            dialog.show(getActivity().getFragmentManager(),"UpdateParcoursFragment");
         }
         return super.onContextItemSelected(item);
     }
