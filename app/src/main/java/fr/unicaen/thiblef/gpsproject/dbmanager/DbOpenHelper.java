@@ -17,6 +17,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             ParcoursDbHandler.COL_NAME + " TEXT, " +
             ParcoursDbHandler.COL_DISTANCE + " REAL, " +
             ParcoursDbHandler.COL_BEST_TIME + " INTEGER, " +
+            ParcoursDbHandler.COL_IDREFERENCE + " INTEGER, " +
             ParcoursDbHandler.COL_AVERAGE_SPEED + " REAL, " +
             ParcoursDbHandler.COL_MAX_SPEED + " REAL "+
             " )";

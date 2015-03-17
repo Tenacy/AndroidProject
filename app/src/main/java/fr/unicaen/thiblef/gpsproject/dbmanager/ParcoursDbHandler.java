@@ -20,6 +20,8 @@ public class ParcoursDbHandler {
 
     public static final String COL_NAME = "name";
 
+    public static final String COL_IDREFERENCE = "idReference";
+
     public static final String COL_DISTANCE = "distance";
 
     public static final String COL_BEST_TIME = "best_time";
@@ -46,7 +48,7 @@ public class ParcoursDbHandler {
      * @return List<Parcours>
      */
     public List<Parcours> findAll(){
-        String[] cols = new String[] {COL_ID, COL_NAME, COL_DISTANCE, COL_BEST_TIME, COL_AVERAGE_SPEED, COL_MAX_SPEED};
+        String[] cols = new String[] {COL_ID, COL_NAME, COL_DISTANCE, COL_BEST_TIME, COL_AVERAGE_SPEED, COL_MAX_SPEED, COL_IDREFERENCE};
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, cols, null, null, null, null, null);
         return makeParcoursList(cursor);
@@ -57,7 +59,7 @@ public class ParcoursDbHandler {
      * @return Parcours
      */
     public Parcours find(int id){
-        String[] cols = new String[] {COL_ID, COL_NAME, COL_DISTANCE, COL_BEST_TIME, COL_AVERAGE_SPEED, COL_MAX_SPEED};
+        String[] cols = new String[] {COL_ID, COL_NAME, COL_DISTANCE, COL_BEST_TIME, COL_AVERAGE_SPEED, COL_MAX_SPEED, COL_IDREFERENCE};
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, cols, COL_ID + "=?", new String[]{Integer.toString(id)}, null, null, null);
         return makeParcoursList(cursor).get(0);
@@ -74,7 +76,8 @@ public class ParcoursDbHandler {
                     cursor.getLong(cursor.getColumnIndex(COL_BEST_TIME)),
                     cursor.getDouble(cursor.getColumnIndex(COL_AVERAGE_SPEED)),
                     cursor.getDouble(cursor.getColumnIndex(COL_MAX_SPEED)),
-                    trajetHandler.findByParcoursId(cursor.getInt(cursor.getColumnIndex(COL_ID))));
+                    trajetHandler.findByParcoursId(cursor.getInt(cursor.getColumnIndex(COL_ID))),
+                    cursor.getInt(cursor.getColumnIndex(COL_IDREFERENCE)));
             parcoursList.add(parcours);
         }
         return parcoursList;
@@ -128,6 +131,7 @@ public class ParcoursDbHandler {
         values.put(COL_BEST_TIME, parcours.getBestTime());
         values.put(COL_AVERAGE_SPEED, parcours.getAverageSpeed());
         values.put(COL_MAX_SPEED, parcours.getMaxSpeed());
+        values.put(COL_IDREFERENCE, parcours.getIdTrajetReference());
         return values;
     }
 }

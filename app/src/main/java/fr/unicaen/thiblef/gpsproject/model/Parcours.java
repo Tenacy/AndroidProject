@@ -19,7 +19,7 @@ public class Parcours implements Comparable{
     protected String name;
 
     /**
-     * distance aproximative du parcours (en m)
+     * distance approximative du parcours (en m)
      */
     protected double distance;
 
@@ -43,19 +43,24 @@ public class Parcours implements Comparable{
      */
     protected List<Trajet> trajets;
 
+    /**
+     * Id du trajet de référence
+     */
+    protected int idTrajetReference;
+
     public Parcours() {
         this("");
     }
 
     public Parcours(String name) {
-        this(0, name, 0, 0, 0, 0, new ArrayList<Trajet>());
+        this(0, name, 0, 0, 0, 0, new ArrayList<Trajet>(),-1);
     }
 
     public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed) {
-        this(id, name, distance, bestTime, averageSpeed, maxSpeed, new ArrayList<Trajet>());
+        this(id, name, distance, bestTime, averageSpeed, maxSpeed, new ArrayList<Trajet>(),-1);
     }
 
-    public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed, List<Trajet> trajets) {
+    public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed, List<Trajet> trajets,int idTrajetReference) {
         this.id = id;
         this.name = name;
         this.distance = distance;
@@ -63,6 +68,15 @@ public class Parcours implements Comparable{
         this.averageSpeed = averageSpeed;
         this.maxSpeed = maxSpeed;
         this.trajets = trajets;
+        this.idTrajetReference = idTrajetReference;
+    }
+
+    public int getIdTrajetReference() {
+        return idTrajetReference;
+    }
+
+    public void setIdTrajetReference(int idTrajetReference) {
+        this.idTrajetReference = idTrajetReference;
     }
 
     public int getId() {
@@ -109,7 +123,7 @@ public class Parcours implements Comparable{
         return trajets;
     }
 
-    public void calcBestTime(){
+    private void calcBestTime(){
         if(!trajets.isEmpty()){
             long bestTime = trajets.get(0).getTemps();
             for(Trajet trajet : trajets){
@@ -123,7 +137,7 @@ public class Parcours implements Comparable{
         }
     }
 
-    public void calcAverageSpeed(){
+    private void calcAverageSpeed(){
         long timeSum = 0;
         double distanceSum = 0;
         if(!trajets.isEmpty()) {
@@ -141,7 +155,7 @@ public class Parcours implements Comparable{
         }
     }
 
-    public void calcMaxSpeed(){
+    private void calcMaxSpeed(){
         double maxSpeed = 0;
         if(!trajets.isEmpty()) {
             for(Trajet trajet : trajets) {
@@ -155,7 +169,7 @@ public class Parcours implements Comparable{
         }
     }
 
-    public void calcMaxDistance(){
+    private void calcMaxDistance(){
         double maxDistance = 0;
         if(!trajets.isEmpty()) {
             for(Trajet trajet : trajets) {
@@ -186,12 +200,7 @@ public class Parcours implements Comparable{
         calcBestTime();
         calcMaxSpeed();
         calcMaxDistance();
-        System.out.println(averageSpeed);
-        System.out.println(maxSpeed);
-        System.out.println(bestTime);
-        System.out.println(distance);
     }
-
 
     @Override
     public int compareTo(Object otherParcours) {
