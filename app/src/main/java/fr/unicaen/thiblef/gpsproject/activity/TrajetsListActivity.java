@@ -4,15 +4,14 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
-import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.model.Parcours;
 import fr.unicaen.thiblef.gpsproject.util.Format;
 
@@ -65,13 +64,13 @@ public class TrajetsListActivity extends ActionBarActivity {
         fragment.loadListView();
     }
 
-    public void loadUi(){
+    public void loadUi() {
         parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(TrajetsListFragment.ARG_PARCOURS_ID, 1));
 
         Resources r = getApplicationContext().getResources();
 
         TextView parcours_name = (TextView) findViewById(R.id.parcours_name);
-        parcours_name.setText(r.getString(R.string.parcours)+ " " + parcours.getName());
+        parcours_name.setText(r.getString(R.string.parcours) + " " + parcours.getName());
 
         TextView parcours_distance = (TextView) findViewById(R.id.parcours_distance);
         parcours_distance.setText(Format.convertToKm(parcours.getDistance()));
@@ -89,7 +88,7 @@ public class TrajetsListActivity extends ActionBarActivity {
         parcours_max_speed.setText(r.getString(R.string.max_speed) + ": " + Format.convertToKmH(parcours.getMaxSpeed()));
 
         TextView list_label = (TextView) findViewById(R.id.list_label);
-        if(parcours.getTrajets().size() == 0) {
+        if (parcours.getTrajets().size() == 0) {
             list_label.setText(R.string.list_label_vide);
         } else {
             list_label.setText(R.string.list_label);
@@ -113,7 +112,7 @@ public class TrajetsListActivity extends ActionBarActivity {
                 trajet_intent.putExtra(TrajetActivity.ARG_PARCOURS_ID, parcours.getId());
                 startActivity(trajet_intent);
                 return true;
-            case  android.R.id.home:
+            case android.R.id.home:
                 navigateUpTo(new Intent(this, ParcoursListActivity.class));
                 return true;
             default:

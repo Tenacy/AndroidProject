@@ -2,8 +2,6 @@ package fr.unicaen.thiblef.gpsproject.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.widget.Toast;
-
 
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class TrajetsListFragment extends ListFragment {
     /**
      * Load list of trajets
      */
-    public void loadListView(){
+    public void loadListView() {
         if (getArguments().containsKey(ARG_PARCOURS_ID)) {
             int idParcours = getArguments().getInt(ARG_PARCOURS_ID);
             List<Trajet> trajets = db.findByParcoursId(idParcours);

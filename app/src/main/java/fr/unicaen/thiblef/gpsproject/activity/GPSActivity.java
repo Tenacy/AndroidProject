@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import java.util.Date;
 
 import fr.unicaen.thiblef.gpsproject.R;
-import fr.unicaen.thiblef.gpsproject.service.GPSLocation;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
+import fr.unicaen.thiblef.gpsproject.service.GPSLocation;
 
 
 /**

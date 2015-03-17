@@ -7,16 +7,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
-import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
-import fr.unicaen.thiblef.gpsproject.fragment.NewParcoursFragment;
-import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
-import fr.unicaen.thiblef.gpsproject.fragment.ParcoursListFragment;
 import fr.unicaen.thiblef.gpsproject.R;
+import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
+import fr.unicaen.thiblef.gpsproject.fragment.NewParcoursFragment;
+import fr.unicaen.thiblef.gpsproject.fragment.ParcoursListFragment;
+import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
 import fr.unicaen.thiblef.gpsproject.model.Parcours;
-import fr.unicaen.thiblef.gpsproject.model.Trajet;
 
 
 public class ParcoursListActivity extends ActionBarActivity
@@ -35,11 +32,11 @@ public class ParcoursListActivity extends ActionBarActivity
      */
     @Override
     public void onItemSelected(Parcours parcours) {
-            // In single-pane mode, simply start the detail activity
-            // for the selected item ID.
-            Intent detailIntent = new Intent(this, TrajetsListActivity.class);
-            detailIntent.putExtra(TrajetsListFragment.ARG_PARCOURS_ID, parcours.getId());
-            startActivity(detailIntent);
+        // In single-pane mode, simply start the detail activity
+        // for the selected item ID.
+        Intent detailIntent = new Intent(this, TrajetsListActivity.class);
+        detailIntent.putExtra(TrajetsListFragment.ARG_PARCOURS_ID, parcours.getId());
+        startActivity(detailIntent);
     }
 
     @Override
@@ -69,7 +66,7 @@ public class ParcoursListActivity extends ActionBarActivity
     public void showDialog() {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialog = new NewParcoursFragment();
-        dialog.show(getFragmentManager(),"NewParcoursFragment");
+        dialog.show(getFragmentManager(), "NewParcoursFragment");
     }
 
     @Override

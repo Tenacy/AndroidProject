@@ -19,7 +19,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             ParcoursDbHandler.COL_BEST_TIME + " INTEGER, " +
             ParcoursDbHandler.COL_IDREFERENCE + " INTEGER, " +
             ParcoursDbHandler.COL_AVERAGE_SPEED + " REAL, " +
-            ParcoursDbHandler.COL_MAX_SPEED + " REAL "+
+            ParcoursDbHandler.COL_MAX_SPEED + " REAL " +
             " )";
 
     private static final String DB_CREATE_TRAJET = "CREATE TABLE " + TrajetDbHandler.TABLE_NAME + "( " +

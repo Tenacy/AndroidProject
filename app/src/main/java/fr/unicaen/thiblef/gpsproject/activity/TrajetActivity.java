@@ -50,7 +50,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         actual_time = 0;
 
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
-        long minTime = 20 * 1000; /*20s*/
+        long minTime = 20 * 1000; //20s
         long minDistance = 25; //25m
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, this);
@@ -120,9 +120,9 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         }
     }
 
-    public void majUi(Location location){
+    public void majUi(Location location) {
         TextView traces = (TextView) findViewById(R.id.traces);
-        traces.setText(traces.getText().toString()+location.getLatitude()+" " +location.getLongitude()+" "+location.getTime()+" "+location.getSpeed()+ "\n");
+        traces.setText(traces.getText().toString() + location.getLatitude() + " " + location.getLongitude() + " " + location.getTime() + " " + location.getSpeed() + "\n");
 
         TextView speed = (TextView) findViewById(R.id.speed);
         speed.setText(Format.convertToKmH(trajet.averageSpeed()));
@@ -154,7 +154,8 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(this);
         parcoursDbHandler.update(parcours);
     }
-    private void generateXml(){
+
+    private void generateXml() {
         GPXWriter gpxWriter = new GPXWriter(this, trajet);
         gpxWriter.convertToXml();
     }

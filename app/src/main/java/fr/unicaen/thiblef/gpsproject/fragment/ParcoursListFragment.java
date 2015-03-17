@@ -1,7 +1,6 @@
 package fr.unicaen.thiblef.gpsproject.fragment;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 import java.util.Collections;
 import java.util.List;
@@ -92,11 +90,11 @@ public class ParcoursListFragment extends ListFragment {
         registerForContextMenu(getListView());
     }
 
-    public void loadParcoursList(){
+    public void loadParcoursList() {
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(getActivity());
         List<Parcours> parcours = parcoursDbHandler.findAll();
         Collections.sort(parcours);
-        ParcoursArrayAdapter adapter = new ParcoursArrayAdapter(this.getActivity(), R.layout.parcours_list_layout,parcours);
+        ParcoursArrayAdapter adapter = new ParcoursArrayAdapter(this.getActivity(), R.layout.parcours_list_layout, parcours);
         setListAdapter(adapter);
 
     }
@@ -188,7 +186,7 @@ public class ParcoursListFragment extends ListFragment {
         if (item.getTitle().equals("Supprimer")) {
             parcoursDbHandler.delete(parcours);
             this.loadParcoursList();
-            Toast.makeText(this.getActivity(), "Parcours "+parcours.getName()+" supprimé!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getActivity(), "Parcours " + parcours.getName() + " supprimé!", Toast.LENGTH_SHORT).show();
         } else if (item.getTitle().equals("Modifier nom du parcours")) {
             Toast.makeText(this.getActivity(), "MODIF", Toast.LENGTH_SHORT).show();
         }

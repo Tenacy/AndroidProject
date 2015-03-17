@@ -37,7 +37,7 @@ public class ParcoursArrayAdapter extends ArrayAdapter {
         parcours_best_time.setText(r.getString(R.string.best_time) + ": " + Format.convertSecondsToHMmSs(parcours.getBestTime()));
 
         TextView nb_trajets = (TextView) convertView.findViewById(R.id.nb_trajets);
-        nb_trajets.setText(parcours.getTrajets().size()+"");
+        nb_trajets.setText(parcours.getTrajets().size() + "");
 
 
         return convertView;
