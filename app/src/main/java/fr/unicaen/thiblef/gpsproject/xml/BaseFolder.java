@@ -32,7 +32,7 @@ public class BaseFolder {
        /* if (isExternalStorageWritable() && isExternalStorageReadable()) {
             baseFolder = context.getExternalFilesDir(null).getAbsolutePath();
         } else {*/
-            baseFolder = context.getFilesDir().getAbsolutePath();
+        baseFolder = context.getFilesDir().getAbsolutePath();
         //}
         return baseFolder;
     }

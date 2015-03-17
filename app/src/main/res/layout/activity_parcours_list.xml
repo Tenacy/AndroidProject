@@ -1,6 +1,10 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/parcours_list"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parcours_list"
     android:name="fr.unicaen.thiblef.gpsproject.fragment.ParcoursListFragment"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:layout_marginLeft="0dp" android:layout_marginRight="0dp"
-    tools:context=".ParcoursListActivity" tools:layout="@android:layout/list_content" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    tools:context=".ParcoursListActivity"
+    tools:layout="@android:layout/list_content" />

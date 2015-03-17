@@ -28,7 +28,7 @@ public class GPSLocation extends Service implements LocationListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startid) {
-        Log.i("GPSLocation : ","Initialisation");
+        Log.i("GPSLocation : ", "Initialisation");
         context = this;
         location = getLocation(context);
 
@@ -36,7 +36,7 @@ public class GPSLocation extends Service implements LocationListener {
     }
 
     public Location getLocation(Context context) {
-        Log.i("GPSLocation : ","Initialisation du manager");
+        Log.i("GPSLocation : ", "Initialisation du manager");
         LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -73,7 +73,7 @@ public class GPSLocation extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("GPSLocation : ","Changement de Location");
+        Log.i("GPSLocation : ", "Changement de Location");
         Intent intent1 = new Intent("fr.unicaen.thiblef.GPSProject");
         intent1.putExtra("latitude", location.getLatitude());
         intent1.putExtra("longitude", location.getLongitude());
@@ -103,7 +103,7 @@ public class GPSLocation extends Service implements LocationListener {
     }
 
     public void stopUsingGPS() {
-        Log.i("GPSLocation : ","StopUsing location manager");
+        Log.i("GPSLocation : ", "StopUsing location manager");
         if (locationManager != null) {
             locationManager.removeUpdates(GPSLocation.this);
         }

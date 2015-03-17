@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 import java.util.Collections;
 import java.util.List;
 
@@ -74,11 +73,11 @@ public class ParcoursListFragment extends ListFragment {
         registerForContextMenu(getListView());
     }
 
-    public void loadParcoursList(){
+    public void loadParcoursList() {
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(getActivity());
         List<Parcours> parcours = parcoursDbHandler.findAll();
         Collections.sort(parcours);
-        ParcoursArrayAdapter adapter = new ParcoursArrayAdapter(this.getActivity(), R.layout.parcours_list_layout,parcours);
+        ParcoursArrayAdapter adapter = new ParcoursArrayAdapter(this.getActivity(), R.layout.parcours_list_layout, parcours);
         setListAdapter(adapter);
 
     }

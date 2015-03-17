@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Maxime.
  */
-public class Parcours implements Comparable{
+public class Parcours implements Comparable {
     /**
      * id du parcours
      */
@@ -53,14 +53,14 @@ public class Parcours implements Comparable{
     }
 
     public Parcours(String name) {
-        this(0, name, 0, 0, 0, 0, new ArrayList<Trajet>(),-1);
+        this(0, name, 0, 0, 0, 0, new ArrayList<Trajet>(), -1);
     }
 
     public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed) {
-        this(id, name, distance, bestTime, averageSpeed, maxSpeed, new ArrayList<Trajet>(),-1);
+        this(id, name, distance, bestTime, averageSpeed, maxSpeed, new ArrayList<Trajet>(), -1);
     }
 
-    public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed, List<Trajet> trajets,int idTrajetReference) {
+    public Parcours(int id, String name, double distance, long bestTime, double averageSpeed, double maxSpeed, List<Trajet> trajets, int idTrajetReference) {
         this.id = id;
         this.name = name;
         this.distance = distance;
@@ -123,11 +123,11 @@ public class Parcours implements Comparable{
         return trajets;
     }
 
-    private void calcBestTime(){
-        if(!trajets.isEmpty()){
+    private void calcBestTime() {
+        if (!trajets.isEmpty()) {
             long bestTime = trajets.get(0).getTemps();
-            for(Trajet trajet : trajets){
-                if(trajet.getTemps() < bestTime){
+            for (Trajet trajet : trajets) {
+                if (trajet.getTemps() < bestTime) {
                     bestTime = trajet.getTemps();
                 }
             }
@@ -137,65 +137,65 @@ public class Parcours implements Comparable{
         }
     }
 
-    private void calcAverageSpeed(){
+    private void calcAverageSpeed() {
         long timeSum = 0;
         double distanceSum = 0;
-        if(!trajets.isEmpty()) {
-            for(Trajet trajet : trajets) {
+        if (!trajets.isEmpty()) {
+            for (Trajet trajet : trajets) {
                 distanceSum += trajet.getDistance();
                 timeSum += trajet.getTemps();
             }
-            if(distanceSum != 0 && timeSum != 0) {
+            if (distanceSum != 0 && timeSum != 0) {
                 this.averageSpeed = distanceSum / timeSum;
             } else {
                 this.averageSpeed = 0;
             }
-        } else{
+        } else {
             this.averageSpeed = 0;
         }
     }
 
-    private void calcMaxSpeed(){
+    private void calcMaxSpeed() {
         double maxSpeed = 0;
-        if(!trajets.isEmpty()) {
-            for(Trajet trajet : trajets) {
-                if((trajet.getDistance() / trajet.getTemps()) > maxSpeed){
+        if (!trajets.isEmpty()) {
+            for (Trajet trajet : trajets) {
+                if ((trajet.getDistance() / trajet.getTemps()) > maxSpeed) {
                     maxSpeed = trajet.getDistance() / trajet.getTemps();
                 }
             }
             this.maxSpeed = maxSpeed;
-        } else{
+        } else {
             this.maxSpeed = 0;
         }
     }
 
-    private void calcMaxDistance(){
+    private void calcMaxDistance() {
         double maxDistance = 0;
-        if(!trajets.isEmpty()) {
-            for(Trajet trajet : trajets) {
-                if(trajet.getDistance() > maxDistance){
+        if (!trajets.isEmpty()) {
+            for (Trajet trajet : trajets) {
+                if (trajet.getDistance() > maxDistance) {
                     maxDistance = trajet.getDistance();
                 }
             }
             this.distance = maxDistance;
-        } else{
+        } else {
             this.distance = maxDistance;
         }
     }
 
-    public long getAverageTime(){
+    public long getAverageTime() {
         long timeSum = 0;
-        if(!trajets.isEmpty()) {
-            for(Trajet trajet : trajets) {
+        if (!trajets.isEmpty()) {
+            for (Trajet trajet : trajets) {
                 timeSum += trajet.getTemps();
             }
             return timeSum / trajets.size();
-        } else{
+        } else {
             return 0;
         }
     }
 
-    public void update(){
+    public void update() {
         calcAverageSpeed();
         calcBestTime();
         calcMaxSpeed();
@@ -216,11 +216,11 @@ public class Parcours implements Comparable{
         return 0;
     }
 
-    public long getLastTrajetDate(){
-        if(!trajets.isEmpty()) {
+    public long getLastTrajetDate() {
+        if (!trajets.isEmpty()) {
             long maxDate = trajets.get(0).getDate();
             for (Trajet trajet : trajets) {
-                if(trajet.getDate()>maxDate){
+                if (trajet.getDate() > maxDate) {
                     maxDate = trajet.getDate();
                 }
             }

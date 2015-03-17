@@ -1,15 +1,14 @@
 package fr.unicaen.thiblef.gpsproject.activity;
 
-import android.location.Location;
-import android.support.v7.app.ActionBarActivity;
+
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
-import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.util.Format;
 

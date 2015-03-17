@@ -1,6 +1,7 @@
 package fr.unicaen.thiblef.gpsproject.xml;
 
 import android.location.Location;
+import android.location.LocationManager;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -53,7 +54,7 @@ public class GPXHandler extends DefaultHandler {
             inNode = false;
         }
         if (localName.equals("trkpt")) {
-            Location location = new Location("SaxParser");
+            Location location = new Location(LocationManager.GPS_PROVIDER);
             location.setLatitude(latitude);
             location.setLongitude(longitude);
             location.setTime(date);

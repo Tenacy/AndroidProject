@@ -8,10 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
-
 import java.util.List;
-
 import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
@@ -60,7 +57,7 @@ public class TrajetsListFragment extends ListFragment {
     /**
      * Load list of trajets
      */
-    public void loadListView(){
+    public void loadListView() {
         if (getArguments().containsKey(ARG_PARCOURS_ID)) {
             int idParcours = getArguments().getInt(ARG_PARCOURS_ID);
             List<Trajet> trajets = db.findByParcoursId(idParcours);

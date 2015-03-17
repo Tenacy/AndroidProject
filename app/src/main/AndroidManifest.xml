@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fr.unicaen.thiblef.gpsproject" >
+    package="fr.unicaen.thiblef.gpsproject">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -11,10 +11,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".activity.ParcoursListActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,29 +24,25 @@
         <activity
             android:name=".activity.TrajetsListActivity"
             android:label="@string/title_parcours_detail"
-            android:parentActivityName=".activity.ParcoursListActivity" >
+            android:parentActivityName=".activity.ParcoursListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.ParcoursListActivity" />
         </activity>
         <activity
             android:name=".activity.TrajetActivity"
-            android:label="@string/title_activity_trajet" >
-        </activity>
+            android:label="@string/title_activity_trajet"></activity>
         <activity
             android:name=".activity.TrajetDetailActivity"
-            android:label="@string/title_activity_trajet_detail" >
-        </activity>
+            android:label="@string/title_activity_trajet_detail"></activity>
         <activity
             android:name=".activity.GPSActivity"
-            android:label="@string/title_activity_gps" >
-        </activity>
+            android:label="@string/title_activity_gps"></activity>
 
         <service
             android:name=".service.GPSLocation"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -30,17 +30,18 @@ public class TrajetDbHandler {
 
     private Context context;
 
-    public TrajetDbHandler(Context context){
+    public TrajetDbHandler(Context context) {
         this.context = context;
         dbOpenHelper = new DbOpenHelper(context, null);
     }
 
     /**
      * Find all trajets
+     *
      * @return List<Trajet>
      */
-    public List<Trajet> findAll(){
-        String[] cols = new String[] {COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
+    public List<Trajet> findAll() {
+        String[] cols = new String[]{COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, cols, null, null, null, null, null);
         return makeTrajetsList(cursor);
@@ -48,10 +49,11 @@ public class TrajetDbHandler {
 
     /**
      * Find all trajets from the parcours id
+     *
      * @return List<Trajet>
      */
-    public List<Trajet> findByParcoursId(int id){
-        String[] cols = new String[] {COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
+    public List<Trajet> findByParcoursId(int id) {
+        String[] cols = new String[]{COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         Cursor cursor = db.query(TABLE_NAME, cols, COL_PARCOURS_ID + "=?", new String[]{Integer.toString(id)}, null, null, COL_DATE + " DESC");
         return makeTrajetsList(cursor);
@@ -59,18 +61,19 @@ public class TrajetDbHandler {
 
     /**
      * Find a trajets by id
+     *
      * @return Trajet
      */
-    public Trajet findById(int id){
-        String[] cols = new String[] {COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
+    public Trajet findById(int id) {
+        String[] cols = new String[]{COL_ID, COL_PARCOURS_ID, COL_DATE, COL_TIME, COL_DISTANCE};
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, cols ,COL_ID + "=?", new String[]{Integer.toString(id)}, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, cols, COL_ID + "=?", new String[]{Integer.toString(id)}, null, null, null);
         return makeTrajetsList(cursor).get(0);
     }
 
-    private List<Trajet> makeTrajetsList(Cursor cursor){
+    private List<Trajet> makeTrajetsList(Cursor cursor) {
         List<Trajet> trajetsList = new ArrayList<>();
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Trajet trajet = new Trajet(cursor.getInt(cursor.getColumnIndex(COL_ID)),
                     cursor.getDouble(cursor.getColumnIndex(COL_DISTANCE)),
                     cursor.getLong(cursor.getColumnIndex(COL_TIME)),
@@ -82,22 +85,24 @@ public class TrajetDbHandler {
 
     /**
      * Delete a trajet
+     *
      * @param id trajet id
      */
-    public void delete(int id){
+    public void delete(int id) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + COL_ID + "=" + id);
     }
 
     /**
      * Add trajet
+     *
      * @param trajet Trajet object
      */
-    public int add(Trajet trajet, Parcours parcours){
-        return add(trajet,parcours.getId());
+    public int add(Trajet trajet, Parcours parcours) {
+        return add(trajet, parcours.getId());
     }
 
-    public int add(Trajet trajet, int parcours_id){
+    public int add(Trajet trajet, int parcours_id) {
         ContentValues values = new ContentValues();
         values.put(COL_PARCOURS_ID, parcours_id);
         values.put(COL_DATE, trajet.getDate());

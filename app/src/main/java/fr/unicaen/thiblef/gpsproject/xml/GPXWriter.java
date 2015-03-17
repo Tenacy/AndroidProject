@@ -53,7 +53,7 @@ public class GPXWriter {
         for (Location l : locations) {
             stream += "\t<trkpt lat=\"" + l.getLatitude() + "\" lon=\"" + l.getLongitude() + "\">\n";
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            stream += "\t\t<time>" + df.format(new Date(l.getTime()*1000)) + "</time>\n";
+            stream += "\t\t<time>" + df.format(new Date(l.getTime() * 1000)) + "</time>\n";
             stream += "\t</trkpt>\n";
         }
         stream += "</trk>\n";
