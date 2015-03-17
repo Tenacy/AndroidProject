@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Runnier</string>
+    <string name="title_parcours_detail">Parcours</string>
+    <string name="title_activity_trajet">Nouveau trajet</string>
+    <string name="parcours">Parcours</string>
+    <string name="menu_parcours_action_new">Nouveau parcours</string>
+    <string name="menu_parcours_action_settings">Paramètres</string>
+    <string name="menu_trajet_action_new">Nouveau trajet</string>
+    <string name="best_time">Meilleur temps</string>
+    <string name="average_time">Temps moyen</string>
+    <string name="max_speed">Meilleure vitesse</string>
+    <string name="average_speed">Vitesse moyenne</string>
+    <string name="distance">Distance</string>
+    <string name="action_settings">Settings</string>
+    <string name="list_label">Liste des trajets:</string>
+    <string name="list_label_vide">Aucun trajet enregistré pour ce parcours</string>
+    <string name="title_activity_trajet_detail">TrajetDetailActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_gps">GPSActivity</string>
+
+</resources>

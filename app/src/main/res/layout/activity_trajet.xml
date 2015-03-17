@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.25">
+
+        <Chronometer
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/chrono"
+            android:gravity="center"
+            android:textColor="#ff000000"
+            android:textSize="60sp"
+            android:text="00:00:00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.25">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.75">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:text="Distance parcourue"
+                android:id="@+id/distance_title"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20sp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:text="Vitesse moyenne"
+                android:id="@+id/speed_title"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="20sp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.25">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:text="0,0km"
+                android:id="@+id/distance"
+                android:gravity="center_horizontal"
+                android:textSize="40sp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="fill_parent"
+                android:text="0,0km/h"
+                android:id="@+id/speed"
+                android:gravity="center_horizontal"
+                android:textSize="40sp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.25">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/traces" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.30"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="0.5dp"
+            android:layout_height="fill_parent"
+            android:text="START"
+            android:id="@+id/button_start_pause"
+            android:layout_weight="0.5"
+            android:background="@color/emerald"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:onClick="start" />
+
+        <Button
+            android:layout_width="0.5dp"
+            android:layout_height="fill_parent"
+            android:text="STOP"
+            android:id="@+id/button_stop"
+            android:layout_weight="0.5"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:onClick="stop"
+            android:background="@color/alizarin"
+            android:enabled="false"/>
+    </LinearLayout>
+</LinearLayout>

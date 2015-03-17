@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="carrot">#E67E22</color>
+    <color name="emerald">#2ECC71</color>
+    <color name="alizarin">#E74C3C</color>
+    <color name="black">#2B2B2B</color>
+    <color name="grey">#EDEDED</color>
+    <color name="blue">#4285F4</color>
+</resources>
