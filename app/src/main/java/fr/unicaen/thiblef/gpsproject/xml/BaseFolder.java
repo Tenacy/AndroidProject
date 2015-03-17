@@ -29,11 +29,11 @@ public class BaseFolder {
     public static String getBaseFolder(Context context) {
         String baseFolder;
         //Ajouter option de selection
-        if (isExternalStorageWritable() && isExternalStorageReadable()) {
+       /* if (isExternalStorageWritable() && isExternalStorageReadable()) {
             baseFolder = context.getExternalFilesDir(null).getAbsolutePath();
-        } else {
+        } else {*/
             baseFolder = context.getFilesDir().getAbsolutePath();
-        }
+        //}
         return baseFolder;
     }
 }
