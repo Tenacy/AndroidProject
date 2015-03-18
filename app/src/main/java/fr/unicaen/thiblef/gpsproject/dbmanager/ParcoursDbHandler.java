@@ -140,4 +140,10 @@ public class ParcoursDbHandler {
         values.put(COL_IDREFERENCE, parcours.getIdTrajetReference());
         return values;
     }
+    public Trajet getReferencedTrajet(int idParcours){
+        Parcours p = find(idParcours);
+        TrajetDbHandler trajetDbHandler = new TrajetDbHandler(context);
+        Trajet t = trajetDbHandler.findById(p.getIdTrajetReference());
+        return t;
+    }
 }
