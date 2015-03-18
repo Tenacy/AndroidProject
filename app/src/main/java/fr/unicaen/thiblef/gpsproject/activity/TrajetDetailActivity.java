@@ -1,7 +1,7 @@
 package fr.unicaen.thiblef.gpsproject.activity;
 
 
-import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,8 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -28,31 +29,46 @@ public class TrajetDetailActivity extends ActionBarActivity {
 
     private Trajet trajet;
 
+    private GoogleMap googleMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajet_detail);
         trajet = new TrajetDbHandler(this).findById(getIntent().getIntExtra(ARG_TRAJET_ID, 1));
         majUi();
-
-        MapFragment mapFragment = MapFragment.newInstance();
-        GoogleMap map = mapFragment.getMap();
-
-        GPXReader gpxReader = new GPXReader(getApplicationContext(),trajet);
-        gpxReader.parse();
-        List<Location> locations = trajet.getLocations();
-
-        PolylineOptions polylineOptions = new PolylineOptions();
-        for(Location loc : locations){
-            polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
-        }
-        map.addPolyline(polylineOptions);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.map_container, mapFragment);
-        fragmentTransaction.commit();
+        setUpMapIfNeeded();
     }
 
+    private void setUpMapIfNeeded() {
+        // check if we have got the googleMap already
+        if (googleMap == null) {
+            googleMap = ((SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map_container)).getMap();
+            if (googleMap != null) {
+                addLines();
+            }
+        }
+    }
+
+    private void addLines() {
+        GPXReader gpxReader = new GPXReader(getApplicationContext(), trajet);
+        gpxReader.parse();
+        List<Location> locations = trajet.getLocations();
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.width(5)
+                .color(Color.BLUE)
+                .geodesic(true);
+        LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
+        if (!locations.isEmpty()) {
+            for (Location loc : locations) {
+                polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
+            }
+        }
+        googleMap.addPolyline(polylineOptions);
+        // move camera to zoom on map
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first, 13));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -76,7 +92,7 @@ public class TrajetDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void majUi(){
+    private void majUi() {
         TextView traces = (TextView) findViewById(R.id.time);
         traces.setText(Format.convertSecondsToHMmSs(trajet.getTemps()));
 

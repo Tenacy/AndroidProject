@@ -96,9 +96,9 @@ public class Trajet {
 
     public void addLocation(Location l) {
         if (locations.size() == 0) {
-            distance += 0;
+            distance = 0;
             locations.add(l);
-            temps += 0;
+            temps = 0;
         } else {
             Location last = getLastPosition();
             distance += last.distanceTo(l);
