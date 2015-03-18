@@ -30,11 +30,10 @@ public class GPXWriter {
     protected File file;
 
 
-    public GPXWriter(Context context, Trajet trajet) {
+    public GPXWriter(Context context, Trajet trajet, String baseFolder) {
         this.trajet = trajet;
         this.context = context;
         String nameFile = NAME + this.trajet.getId() + ".gpx";
-        String baseFolder = BaseFolder.getBaseFolder(context);
         file = new File(baseFolder + nameFile);
         try {
             fos = context.openFileOutput(nameFile, Context.MODE_PRIVATE);
@@ -42,6 +41,10 @@ public class GPXWriter {
             e.printStackTrace();
             Toast.makeText(context, "Fichier introuvable", Toast.LENGTH_LONG);
         }
+    }
+
+    public GPXWriter(Context context, Trajet trajet) {
+        this(context, trajet, BaseFolder.getBaseFolder(context));
     }
 
     public void convertToXml() {

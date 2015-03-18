@@ -140,4 +140,5 @@ public class ParcoursDbHandler {
         values.put(COL_IDREFERENCE, parcours.getIdTrajetReference());
         return values;
     }
+
 }
