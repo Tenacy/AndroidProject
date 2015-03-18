@@ -1,5 +1,6 @@
 package fr.unicaen.thiblef.gpsproject.activity;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,6 +36,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     protected LocationManager locationManager;
     protected Trajet trajet;
     protected boolean isStarted;
+    protected boolean firstStart;
     protected long actual_time;
     protected Chronometer chronometer;
     private Parcours parcours;
@@ -46,6 +48,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(TrajetsListFragment.ARG_PARCOURS_ID, 1));
         trajet = new Trajet();
         trajet.setDate(new Date().getTime());
+        firstStart = true;
         isStarted = false;
         actual_time = 0;
 
@@ -84,7 +87,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     public void start(View view) {
         Button button = (Button) view;
         Button button_stop = (Button) findViewById(R.id.button_stop);
-        button_stop.setEnabled(true);
+
         if (isStarted) {
             isStarted = false;
             button.setBackgroundResource(R.color.emerald);
@@ -94,11 +97,22 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
             chronometer.stop();
         } else {
             isStarted = true;
+            button_stop.setEnabled(true);
             button.setBackgroundResource(R.color.carrot);
             button.setText("PAUSE");
             Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
             chronometer.setBase(SystemClock.elapsedRealtime() + actual_time);
             chronometer.start();
+            if(firstStart){
+                Location first = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(first != null) {
+                    Date d = new Date();
+                    first.setTime(d.getTime());
+                    trajet.addLocation(first);
+                    firstStart = false;
+                    majUi(first);
+                }
+            }
         }
     }
 
@@ -108,9 +122,20 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         Button button_start_pause = (Button) findViewById(R.id.button_start_pause);
         button_start_pause.setBackgroundResource(R.color.emerald);
         button_start_pause.setText("START");
-        insertInDB();
+        Button button_stop = (Button) view;
+        button_stop.setEnabled(false);
+        button_start_pause.setEnabled(false);
+        Location last = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(last != null){
+            last.setTime(new Date().getTime());
+            trajet.addLocation(last);
+            majUi(last);
+        }
+        int trajet_id = insertInDB();
         generateXml();
-
+        Intent trajet_details = new Intent(this, TrajetDetailActivity.class);
+        trajet_details.putExtra(TrajetDetailActivity.ARG_TRAJET_ID, trajet_id);
+        startActivity(trajet_details);
     }
 
     @Override
@@ -147,7 +172,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
 
     }
 
-    private void insertInDB() {
+    private int insertInDB() {
         TrajetDbHandler trajetDbHandler = new TrajetDbHandler(this);
         int id = trajetDbHandler.add(trajet, parcours);
         trajet.setId(id);
@@ -157,6 +182,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         }
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(this);
         parcoursDbHandler.update(parcours);
+        return id;
     }
 
     private void generateXml() {

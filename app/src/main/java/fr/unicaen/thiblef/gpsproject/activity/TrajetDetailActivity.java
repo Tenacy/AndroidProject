@@ -1,16 +1,26 @@
 package fr.unicaen.thiblef.gpsproject.activity;
 
 
+import android.app.FragmentTransaction;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.List;
+
 import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.util.Format;
+import fr.unicaen.thiblef.gpsproject.xml.GPXReader;
 
 public class TrajetDetailActivity extends ActionBarActivity {
 
@@ -24,6 +34,23 @@ public class TrajetDetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_trajet_detail);
         trajet = new TrajetDbHandler(this).findById(getIntent().getIntExtra(ARG_TRAJET_ID, 1));
         majUi();
+
+        MapFragment mapFragment = MapFragment.newInstance();
+        GoogleMap map = mapFragment.getMap();
+
+        GPXReader gpxReader = new GPXReader(getApplicationContext(),trajet);
+        gpxReader.parse();
+        List<Location> locations = trajet.getLocations();
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+        for(Location loc : locations){
+            polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
+        }
+        map.addPolyline(polylineOptions);
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.map_container, mapFragment);
+        fragmentTransaction.commit();
     }
 
 
