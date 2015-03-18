@@ -1,6 +1,7 @@
 package fr.unicaen.thiblef.gpsproject.fragment;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
@@ -37,7 +38,7 @@ public class TrajetsListFragment extends ListFragment {
     /**
      * Chemin vers le dossier Download
      */
-    private static final String DOWNLOAD_PATH = "/storage/sdcard0/Download";
+    private static final String DOWNLOAD_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
 
     private TrajetDbHandler db;
 
