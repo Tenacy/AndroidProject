@@ -59,15 +59,16 @@ public class TrajetDetailActivity extends ActionBarActivity {
         polylineOptions.width(5)
                 .color(Color.BLUE)
                 .geodesic(true);
-        LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
+
         if (!locations.isEmpty()) {
+            LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
             for (Location loc : locations) {
                 polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
             }
+            googleMap.addPolyline(polylineOptions);
+            // move camera to zoom on map
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first, 13));
         }
-        googleMap.addPolyline(polylineOptions);
-        // move camera to zoom on map
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first, 13));
     }
 
     @Override
