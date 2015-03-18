@@ -13,47 +13,23 @@ import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
 import fr.unicaen.thiblef.gpsproject.model.Parcours;
+import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.util.Format;
 
+public class TrajetsListActivity extends ActionBarActivity implements TrajetsListFragment.Callbacks{
 
-/**
- * An activity representing a single Parcours detail screen. This
- * activity is only used on handset devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link ParcoursListActivity}.
- * <p/>
- * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment}.
- */
-public class TrajetsListActivity extends ActionBarActivity {
+    public static final String ARG_PARCOURS_ID = "parcours_id";
 
     private Parcours parcours;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajet_list);
-
-        // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
+        parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(ARG_PARCOURS_ID, 1));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);  // Show the Up button in the action bar.
         loadUi();
-
-        Bundle arguments = new Bundle();
-        arguments.putInt(TrajetsListFragment.ARG_PARCOURS_ID, parcours.getId());
-        TrajetsListFragment fragment = new TrajetsListFragment();
-        fragment.setArguments(arguments);
-        getSupportFragmentManager().beginTransaction().add(R.id.parcours_detail_container, fragment).commit();
+        loadFragment();
     }
 
     @Override
@@ -64,9 +40,7 @@ public class TrajetsListActivity extends ActionBarActivity {
         fragment.loadListView();
     }
 
-    public void loadUi() {
-        parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(TrajetsListFragment.ARG_PARCOURS_ID, 1));
-
+    private void loadUi() {
         Resources r = getApplicationContext().getResources();
 
         TextView parcours_name = (TextView) findViewById(R.id.parcours_name);
@@ -95,9 +69,16 @@ public class TrajetsListActivity extends ActionBarActivity {
         }
     }
 
+    private void loadFragment(){
+        TrajetsListFragment fragment = new TrajetsListFragment();
+        Bundle arguments = new Bundle();
+        arguments.putInt(TrajetsListFragment.ARG_PARCOURS_ID, parcours.getId());
+        fragment.setArguments(arguments);
+        getSupportFragmentManager().beginTransaction().add(R.id.parcours_detail_container, fragment).commit();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_trajets, menu);
         return super.onCreateOptionsMenu(menu);
@@ -105,14 +86,10 @@ public class TrajetsListActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_trajet_new:
                 Intent trajet_intent = new Intent(this, TrajetActivity.class);
                 trajet_intent.putExtra(TrajetActivity.ARG_PARCOURS_ID, parcours.getId());
-
-                //Intent trajet_intent = new Intent(this, GPSActivity.class);
-                //trajet_intent.putExtra(GPSActivity.ARG_PARCOURS_ID, parcours.getId());
                 startActivity(trajet_intent);
                 return true;
             case android.R.id.home:
@@ -121,5 +98,12 @@ public class TrajetsListActivity extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onItemSelected(Trajet trajet) {
+        Intent trajet_details = new Intent(this, TrajetDetailActivity.class);
+        trajet_details.putExtra(TrajetDetailActivity.ARG_TRAJET_ID, trajet.getId());
+        startActivity(trajet_details);
     }
 }

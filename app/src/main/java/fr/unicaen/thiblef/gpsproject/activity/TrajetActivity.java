@@ -28,24 +28,21 @@ import fr.unicaen.thiblef.gpsproject.xml.GPXWriter;
 
 public class TrajetActivity extends ActionBarActivity implements LocationListener {
 
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
     public static final String ARG_PARCOURS_ID = "parcours_id";
-    protected LocationManager locationManager;
-    protected Trajet trajet;
-    protected boolean isStarted;
-    protected boolean firstStart;
-    protected long actual_time;
-    protected Chronometer chronometer;
+
+    private LocationManager locationManager;
+    private Trajet trajet;
+    private boolean isStarted;
+    private boolean firstStart;
+    private long actual_time;
+    private Chronometer chronometer;
     private Parcours parcours;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajet);
-        parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(TrajetsListFragment.ARG_PARCOURS_ID, 1));
+        parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(ARG_PARCOURS_ID, 1));
         trajet = new Trajet();
         trajet.setDate(new Date().getTime());
         firstStart = true;
@@ -64,43 +61,36 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_trajet, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     public void start(View view) {
         Button button = (Button) view;
         Button button_stop = (Button) findViewById(R.id.button_stop);
-
         if (isStarted) {
             isStarted = false;
             button.setBackgroundResource(R.color.emerald);
-            button.setText("START");
-            Toast.makeText(this, "PAUSE", Toast.LENGTH_SHORT).show();
+            button.setText(getResources().getString(R.string.start));
+            Toast.makeText(this, getResources().getString(R.string.pause), Toast.LENGTH_SHORT).show();
             actual_time = chronometer.getBase() - SystemClock.elapsedRealtime();
             chronometer.stop();
         } else {
             isStarted = true;
             button_stop.setEnabled(true);
             button.setBackgroundResource(R.color.carrot);
-            button.setText("PAUSE");
-            Toast.makeText(this, "START", Toast.LENGTH_SHORT).show();
+            button.setText(getResources().getString(R.string.pause));
+            Toast.makeText(this, getResources().getString(R.string.start), Toast.LENGTH_SHORT).show();
             chronometer.setBase(SystemClock.elapsedRealtime() + actual_time);
             chronometer.start();
             if(firstStart){
@@ -121,7 +111,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         chronometer.stop();
         Button button_start_pause = (Button) findViewById(R.id.button_start_pause);
         button_start_pause.setBackgroundResource(R.color.emerald);
-        button_start_pause.setText("START");
+        button_start_pause.setText(getResources().getString(R.string.start));
         Button button_stop = (Button) view;
         button_stop.setEnabled(false);
         button_start_pause.setEnabled(false);
@@ -146,7 +136,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         }
     }
 
-    public void majUi(Location location) {
+    private void majUi(Location location) {
         TextView traces = (TextView) findViewById(R.id.traces);
         traces.setText(traces.getText().toString() + location.getLatitude() + " " + location.getLongitude() + " " + location.getTime() + " " + location.getSpeed() + "\n");
 

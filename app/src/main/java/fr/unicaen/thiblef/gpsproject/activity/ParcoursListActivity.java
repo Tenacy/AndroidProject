@@ -21,29 +21,21 @@ import fr.unicaen.thiblef.gpsproject.model.Parcours;
 public class ParcoursListActivity extends ActionBarActivity
         implements ParcoursListFragment.Callbacks, NewParcoursFragment.NewParcoursListener, UpdateParcoursFragment.UpdateParcoursListener {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parcours_list);
     }
 
-    /**
-     * Callback method from {@link ParcoursListFragment.Callbacks}
-     * indicating that the item with the given ID was selected.
-     */
     @Override
     public void onItemSelected(Parcours parcours) {
-        // In single-pane mode, simply start the detail activity
-        // for the selected item ID.
         Intent detailIntent = new Intent(this, TrajetsListActivity.class);
-        detailIntent.putExtra(TrajetsListFragment.ARG_PARCOURS_ID, parcours.getId());
+        detailIntent.putExtra(TrajetsListActivity.ARG_PARCOURS_ID, parcours.getId());
         startActivity(detailIntent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_parcours, menu);
         return super.onCreateOptionsMenu(menu);
@@ -51,7 +43,6 @@ public class ParcoursListActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_parcours_new:
                 DialogFragment dialog = new NewParcoursFragment();
@@ -92,7 +83,4 @@ public class ParcoursListActivity extends ActionBarActivity
         ParcoursListFragment fragment = (ParcoursListFragment) getSupportFragmentManager().findFragmentById(R.id.parcours_list);
         fragment.loadParcoursList();
     }
-
-
-
 }

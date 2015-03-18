@@ -63,8 +63,8 @@ public class TrajetDetailActivity extends ActionBarActivity {
                     .geodesic(true);
             LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
             LatLng last = new LatLng(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude());
-            addMarker(first, "Départ");
-            addMarker(last, "Arrivée");
+            addMarker(first, getResources().getString(R.string.depart));
+            addMarker(last, getResources().getString(R.string.arrivee));
             for (Location loc : locations) {
                 polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
             }
