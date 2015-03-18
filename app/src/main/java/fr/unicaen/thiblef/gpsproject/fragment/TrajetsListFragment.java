@@ -30,6 +30,11 @@ public class TrajetsListFragment extends ListFragment {
      */
     public static final String ARG_PARCOURS_ID = "parcours_id";
 
+    /**
+     * Chemin vers le dossier Download
+     */
+    private static final String DOWNLOAD_PATH = "/storage/sdcard0/Download";
+
     private TrajetDbHandler db;
 
     private TrajetArrayAdapter adapter;
