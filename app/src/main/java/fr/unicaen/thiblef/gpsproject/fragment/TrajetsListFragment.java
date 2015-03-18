@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
 import java.util.List;
+
 import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
@@ -16,6 +18,8 @@ import fr.unicaen.thiblef.gpsproject.model.Parcours;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.model.TrajetArrayAdapter;
 import fr.unicaen.thiblef.gpsproject.util.Format;
+import fr.unicaen.thiblef.gpsproject.xml.GPXReader;
+import fr.unicaen.thiblef.gpsproject.xml.GPXWriter;
 
 /**
  * A fragment representing a single Parcours detail screen.
@@ -78,9 +82,10 @@ public class TrajetsListFragment extends ListFragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         Trajet trajet = (Trajet) getListView().getAdapter().getItem(info.position);
-        menu.setHeaderTitle("Trajet du "+ Format.convertToDate(trajet.getDate()));
+        menu.setHeaderTitle("Trajet du " + Format.convertToDate(trajet.getDate()));
         menu.add(0, v.getId(), 0, "Supprimer");
         menu.add(0, v.getId(), 0, "Définir en trajet de référence");
+        menu.add(0, v.getId(), 0, "Télécharger le GPX");
     }
 
     @Override
@@ -90,11 +95,12 @@ public class TrajetsListFragment extends ListFragment {
         ParcoursDbHandler parcoursDbHandler = new ParcoursDbHandler(getActivity());
         Parcours parcours = parcoursDbHandler.find(getArguments().getInt(ARG_PARCOURS_ID));
         TrajetDbHandler trajetDbHandler = new TrajetDbHandler(getActivity());
+
         if (item.getTitle().equals("Supprimer")) {
             trajetDbHandler.delete(trajet.getId());
-            if(trajet.getId() == parcoursDbHandler.find(getArguments().getInt(ARG_PARCOURS_ID)).getIdTrajetReference()){
+            if (trajet.getId() == parcoursDbHandler.find(getArguments().getInt(ARG_PARCOURS_ID)).getIdTrajetReference()) {
                 List<Trajet> trajets = trajetDbHandler.findByParcoursId(parcours.getId());
-                if(!trajets.isEmpty()){
+                if (!trajets.isEmpty()) {
                     int idNewRef = trajets.get(0).getId();
                     parcours.setIdTrajetReference(trajetDbHandler.findByParcoursId(parcours.getId()).get(0).getId());
                 } else {
@@ -103,12 +109,19 @@ public class TrajetsListFragment extends ListFragment {
                 parcoursDbHandler.update(parcours);
             }
             this.loadListView();
-            Toast.makeText(this.getActivity(), "Trajet du "+ Format.convertToDate(trajet.getDate())+" supprimé", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getActivity(), "Trajet du " + Format.convertToDate(trajet.getDate()) + " supprimé", Toast.LENGTH_SHORT).show();
         } else if (item.getTitle().equals("Définir en trajet de référence")) {
             parcours.setIdTrajetReference(trajet.getId());
             parcoursDbHandler.update(parcours);
             this.loadListView();
-            Toast.makeText(this.getActivity(), "Trajet du "+ Format.convertToDate(trajet.getDate())+" mis en trajet de référence", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getActivity(), "Trajet du " + Format.convertToDate(trajet.getDate()) + " mis en trajet de référence", Toast.LENGTH_SHORT).show();
+        } else if (item.getTitle().equals("Télécharger le GPX")) {
+            //Récupération des points gpx
+            GPXReader gpxReader = new GPXReader(getActivity(), trajet);
+            gpxReader.parse();
+            //On recréer le fichier dans le répertoire download
+            new GPXWriter(getActivity(), trajet, DOWNLOAD_PATH);
+
         }
         return super.onContextItemSelected(item);
     }
