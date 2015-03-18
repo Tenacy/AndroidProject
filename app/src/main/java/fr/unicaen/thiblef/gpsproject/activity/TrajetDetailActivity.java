@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
@@ -55,13 +56,15 @@ public class TrajetDetailActivity extends ActionBarActivity {
         GPXReader gpxReader = new GPXReader(getApplicationContext(), trajet);
         gpxReader.parse();
         List<Location> locations = trajet.getLocations();
-        PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.width(5)
-                .color(Color.BLUE)
-                .geodesic(true);
-
         if (!locations.isEmpty()) {
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.width(5)
+                    .color(Color.BLUE)
+                    .geodesic(true);
             LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
+            LatLng last = new LatLng(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude());
+            addMarker(first, "Départ");
+            addMarker(last, "Arrivée");
             for (Location loc : locations) {
                 polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
             }
@@ -69,6 +72,13 @@ public class TrajetDetailActivity extends ActionBarActivity {
             // move camera to zoom on map
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first, 13));
         }
+    }
+
+    private void addMarker(LatLng position, String title){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(position);
+        markerOptions.title(title);
+        googleMap.addMarker(markerOptions);
     }
 
     @Override

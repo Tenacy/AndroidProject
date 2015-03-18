@@ -16,9 +16,9 @@
     <string name="action_settings">Settings</string>
     <string name="list_label">Liste des trajets:</string>
     <string name="list_label_vide">Aucun trajet enregistré pour ce parcours</string>
-    <string name="title_activity_trajet_detail">TrajetDetailActivity</string>
+    <string name="title_activity_trajet_detail">Nouveau trajet</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_gps">Nouveau trajety</string>
+    <string name="title_activity_gps">Nouveau trajet</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
