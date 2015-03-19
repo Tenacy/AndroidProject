@@ -111,4 +111,15 @@ public class TrajetDbHandler {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         return (int) db.insert(TABLE_NAME, null, values);
     }
+
+    public int getParcoursId(int id_trajet) {
+        String[] cols = new String[]{COL_PARCOURS_ID};
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, cols, COL_ID + "=?", new String[]{Integer.toString(id_trajet)}, null, null, null);
+        return cursor.moveToFirst()?cursor.getInt(cursor.getColumnIndex(COL_PARCOURS_ID)):-1;
+    }
+
+    public int getParcoursId(Trajet trajet){
+        return getParcoursId(trajet.getId());
+    }
 }

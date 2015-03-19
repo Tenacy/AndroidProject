@@ -43,8 +43,10 @@ public class TrajetsListActivity extends ActionBarActivity implements TrajetsLis
     private void loadUi() {
         Resources r = getApplicationContext().getResources();
 
+        setTitle(r.getString(R.string.parcours) + " " + parcours.getName());
+
         TextView parcours_name = (TextView) findViewById(R.id.parcours_name);
-        parcours_name.setText(r.getString(R.string.parcours) + " " + parcours.getName());
+        parcours_name.setText(r.getString(R.string.allure_moyenne) + ": " + Format.convertToMinKm(parcours.getAveragePace()));
 
         TextView parcours_distance = (TextView) findViewById(R.id.parcours_distance);
         parcours_distance.setText(Format.convertToKm(parcours.getDistance()));
@@ -93,6 +95,7 @@ public class TrajetsListActivity extends ActionBarActivity implements TrajetsLis
                 startActivity(trajet_intent);
                 return true;
             case android.R.id.home:
+
                 navigateUpTo(new Intent(this, ParcoursListActivity.class));
                 return true;
             default:

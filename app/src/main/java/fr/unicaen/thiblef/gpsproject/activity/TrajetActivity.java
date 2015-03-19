@@ -56,6 +56,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, this);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
+        setTitle(getResources().getString(R.string.title_activity_trajet)+" "+parcours.getName() );
     }
 
 

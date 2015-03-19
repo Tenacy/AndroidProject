@@ -155,6 +155,10 @@ public class Parcours implements Comparable {
         }
     }
 
+    public double getAveragePace(){
+        return averageSpeed * 16.666666666667;
+    }
+
     private void calcMaxSpeed() {
         double maxSpeed = 0;
         if (!trajets.isEmpty()) {

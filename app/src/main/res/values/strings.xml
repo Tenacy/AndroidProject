@@ -14,6 +14,7 @@
     <string name="average_time">Temps moyen</string>
     <string name="max_speed">Meilleure vitesse</string>
     <string name="average_speed">Vitesse moyenne</string>
+    <string name="allure_moyenne">Allure moyenne</string>
     <string name="distance">Distance</string>
     <string name="list_label">Liste des trajets:</string>
     <string name="list_label_vide">Aucun trajet enregistré pour ce parcours</string>
@@ -23,6 +24,7 @@
     <string name="renommer">Renommer</string>
     <string name="annuler">Annuler</string>
     <string name="supprimer">Supprimer</string>
+    <string name="valider">Valider</string>
     <string name="supprime">supprimé</string>
     <string name="modif_nom_parcours">Modifier le nom du parcours</string>
     <string name="modification_nom_parcours">Modification du parcours</string>

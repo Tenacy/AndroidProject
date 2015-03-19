@@ -36,8 +36,8 @@ public class Format {
 
     public static String convertToMinKm(double allure) {
         String tab[] = Double.toString(allure).split(".");
-        String min = tab[0];
-        String sec = Double.toString(Double.parseDouble("0." + tab[1]) * 100 / 60).substring(0, 2);
-        return min + ":" + sec + "km/h";
+        String min = tab.length >= 1 ? tab[0] : "0";
+        String sec = tab.length >= 2 ? Double.toString(Double.parseDouble("0." + tab[1]) * 100 / 60).substring(0, 2) : "0";
+        return min + ":" + sec + "min/km";
     }
 }

@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/parcours"
+            android:text="@string/allure_moyenne"
             android:id="@+id/parcours_name"
             android:layout_gravity="center"
             android:textColor="#ff000000" />
@@ -31,7 +31,8 @@
             android:gravity="right"
             android:id="@+id/parcours_distance"
             android:layout_gravity="right"
-            android:text="distance" />
+            android:text="distance"
+            android:textColor="#ff000000" />
     </LinearLayout>
 
     <LinearLayout

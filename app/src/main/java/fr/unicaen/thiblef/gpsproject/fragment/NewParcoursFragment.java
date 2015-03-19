@@ -42,7 +42,7 @@ public class NewParcoursFragment extends DialogFragment {
         text.setTextColor(getResources().getColor(R.color.black));
         builder.setTitle(getResources().getString(R.string.nouveauParcours))
                 .setView(text)
-                .setPositiveButton(getResources().getString(R.string.renommer), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.valider), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onNewParcours(NewParcoursFragment.this, text.getText().toString().trim());
                     }

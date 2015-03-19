@@ -45,7 +45,7 @@ public class UpdateParcoursFragment extends DialogFragment {
         text.setTextColor(getResources().getColor(R.color.black));
         builder.setTitle(getResources().getString(R.string.modification_nom_parcours))
                 .setView(text)
-                .setPositiveButton(getResources().getString(R.string.modif_nom_parcours), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.renommer), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onUpdateParcours(UpdateParcoursFragment.this, parcours_id, text.getText().toString().trim());
                     }
