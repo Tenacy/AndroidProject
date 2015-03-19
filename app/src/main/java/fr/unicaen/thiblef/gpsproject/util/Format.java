@@ -15,6 +15,11 @@ public class Format {
         long h = (seconds / (60 * 60)) % 24;
         return String.format("%02d:%02d'%02d", h, m, s);
     }
+    public static String convertSecondsToMmSs(long seconds) {
+        long s = seconds % 60;
+        long m = (seconds / 60) % 60;
+        return String.format("%02d'%02d", m, s);
+    }
 
     public static String convertToDate(long date) {
         return new SimpleDateFormat("dd/MM/yy HH:mm", Locale.FRANCE).format(date);
@@ -34,10 +39,18 @@ public class Format {
         return s.replace('.', ',') + "km/h";
     }
 
-    public static String convertToMinKm(double allure) {
-        String tab[] = Double.toString(allure).split(".");
-        String min = tab.length >= 1 ? tab[0] : "0";
-        String sec = tab.length >= 2 ? Double.toString(Double.parseDouble("0." + tab[1]) * 100 / 60).substring(0, 2) : "0";
-        return min + ":" + sec + "min/km";
+    public static String convertToMinKm(double vitesse) {
+        if(vitesse == 0){
+            return "0:00min/km";
+        }
+        double minkm = 60 / (vitesse * 3.6);
+        int min = (int) minkm;
+        double dif = (minkm - min) * 60;
+        int sec = (int) dif;
+        String secs = Integer.toString(sec);
+        if(sec < 10){
+            secs = "0"+secs;
+        }
+        return min + ":" + secs + "min/km";
     }
 }

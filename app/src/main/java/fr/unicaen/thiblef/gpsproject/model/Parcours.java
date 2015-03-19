@@ -91,8 +91,13 @@ public class Parcours implements Comparable {
         trajets.add(t);
     }
 
-    public void removeTrajet(Trajet t) {
-        trajets.remove(t);
+    public void removeTrajet(int trajet_id) {
+        for(Trajet trajet :  trajets){
+            if(trajet.getId() == trajet_id){
+                trajets.remove(trajet);
+                return;
+            }
+        }
     }
 
     public String getName() {
@@ -153,10 +158,6 @@ public class Parcours implements Comparable {
         } else {
             this.averageSpeed = 0;
         }
-    }
-
-    public double getAveragePace(){
-        return averageSpeed * 16.666666666667;
     }
 
     private void calcMaxSpeed() {

@@ -10,17 +10,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
 
 import fr.unicaen.thiblef.gpsproject.R;
+import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
+import fr.unicaen.thiblef.gpsproject.model.Parcours;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.util.Format;
 import fr.unicaen.thiblef.gpsproject.xml.GPXReader;
@@ -31,13 +36,16 @@ public class TrajetDetailActivity extends ActionBarActivity {
 
     private Trajet trajet;
 
+    private TrajetDbHandler dbTrajet;
+
     private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajet_detail);
-        trajet = new TrajetDbHandler(this).findById(getIntent().getIntExtra(ARG_TRAJET_ID, 1));
+        dbTrajet = new TrajetDbHandler(this);
+        trajet = dbTrajet.findById(getIntent().getIntExtra(ARG_TRAJET_ID, 1));
         setTitle(getResources().getString(R.string.trajet_du)+ " " + Format.convertToDate(trajet.getDate()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         majUi();
@@ -51,6 +59,9 @@ public class TrajetDetailActivity extends ActionBarActivity {
                     .findFragmentById(R.id.map_container)).getMap();
             if (googleMap != null) {
                 addLines();
+                if(!dbTrajet.isTrajetReference(trajet)){
+                    addReferenceLines();
+                }
             }
         }
     }
@@ -60,20 +71,46 @@ public class TrajetDetailActivity extends ActionBarActivity {
         gpxReader.parse();
         List<Location> locations = trajet.getLocations();
         if (!locations.isEmpty()) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
             PolylineOptions polylineOptions = new PolylineOptions();
             polylineOptions.width(5)
-                    .color(Color.BLUE)
+                    .color(getResources().getColor(R.color.blue))
                     .geodesic(true);
             LatLng first = new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude());
             LatLng last = new LatLng(locations.get(locations.size()-1).getLatitude(), locations.get(locations.size()-1).getLongitude());
             addMarker(first, getResources().getString(R.string.depart));
             addMarker(last, getResources().getString(R.string.arrivee));
             for (Location loc : locations) {
+                LatLng latlng = new LatLng(loc.getLatitude(), loc.getLongitude());
+                polylineOptions.add(latlng);
+                builder.include(latlng);
+            }
+            googleMap.addPolyline(polylineOptions);
+            final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(builder.build(), 85);
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    googleMap.moveCamera(cu);
+                }
+            });
+        }
+    }
+
+    private void addReferenceLines(){
+        Trajet ref = dbTrajet.getTrajetRef(trajet);
+        GPXReader gpxReader = new GPXReader(getApplicationContext(), ref);
+        gpxReader.parse();
+        List<Location> locations = ref.getLocations();
+        if (!locations.isEmpty()) {
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.width(2)
+                    .color(getResources().getColor(R.color.alizarin))
+                    .geodesic(true);
+            for (Location loc : locations) {
                 polylineOptions.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
             }
             googleMap.addPolyline(polylineOptions);
-            // move camera to zoom on map
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first, 13));
+
         }
     }
 
@@ -81,6 +118,7 @@ public class TrajetDetailActivity extends ActionBarActivity {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(position);
         markerOptions.title(title);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         googleMap.addMarker(markerOptions);
     }
 
@@ -109,6 +147,9 @@ public class TrajetDetailActivity extends ActionBarActivity {
     private void majUi() {
         TextView traces = (TextView) findViewById(R.id.time);
         traces.setText(Format.convertSecondsToHMmSs(trajet.getTemps()));
+
+        TextView allure = (TextView) findViewById(R.id.allure);
+        allure.setText(Format.convertToMinKm(trajet.averageSpeed()));
 
         TextView speed = (TextView) findViewById(R.id.speed);
         speed.setText(Format.convertToKmH(trajet.averageSpeed()));

@@ -33,10 +33,10 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     private LocationManager locationManager;
     private Trajet trajet;
     private boolean isStarted;
-    private boolean firstStart;
     private long actual_time;
     private Chronometer chronometer;
     private Parcours parcours;
+    private int nbLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,9 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(ARG_PARCOURS_ID, 1));
         trajet = new Trajet();
         trajet.setDate(new Date().getTime());
-        firstStart = true;
         isStarted = false;
         actual_time = 0;
+        nbLoc = 0;
 
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
         long minTime = 20 * 1000; //20s
@@ -79,43 +79,28 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     public void start(View view) {
         Button button = (Button) view;
         Button button_stop = (Button) findViewById(R.id.button_stop);
-        if (isStarted) {
-            isStarted = false;
-            button.setBackgroundResource(R.color.emerald);
-            button.setText(getResources().getString(R.string.start));
-            Toast.makeText(this, getResources().getString(R.string.pause), Toast.LENGTH_SHORT).show();
-            actual_time = chronometer.getBase() - SystemClock.elapsedRealtime();
-            chronometer.stop();
-        } else {
-            isStarted = true;
-            button_stop.setEnabled(true);
-            button.setBackgroundResource(R.color.carrot);
-            button.setText(getResources().getString(R.string.pause));
-            Toast.makeText(this, getResources().getString(R.string.start), Toast.LENGTH_SHORT).show();
-            chronometer.setBase(SystemClock.elapsedRealtime() + actual_time);
-            chronometer.start();
-            if(firstStart){
-                Location first = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(first != null) {
-                    Date d = new Date();
-                    first.setTime(d.getTime());
-                    trajet.addLocation(first);
-                    firstStart = false;
-                    majUi(first);
-                }
-            }
+        isStarted = true;
+        button_stop.setEnabled(true);
+        button.setEnabled(false);
+        Toast.makeText(this, getResources().getString(R.string.start), Toast.LENGTH_SHORT).show();
+        chronometer.setBase(SystemClock.elapsedRealtime() + actual_time);
+        chronometer.start();
+        Location first = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(first != null) {
+            Date d = new Date();
+            first.setTime(d.getTime());
+            trajet.addLocation(first);
+            majUi(first);
         }
     }
 
     public void stop(View view) {
         isStarted = false;
         chronometer.stop();
-        Button button_start_pause = (Button) findViewById(R.id.button_start_pause);
-        button_start_pause.setBackgroundResource(R.color.emerald);
-        button_start_pause.setText(getResources().getString(R.string.start));
+        Button button_start = (Button) findViewById(R.id.button_start);
         Button button_stop = (Button) view;
         button_stop.setEnabled(false);
-        button_start_pause.setEnabled(false);
+        button_start.setEnabled(false);
         Location last = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if(last != null){
             last.setTime(new Date().getTime());
@@ -138,14 +123,24 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     }
 
     private void majUi(Location location) {
-        TextView traces = (TextView) findViewById(R.id.traces);
-        traces.setText(traces.getText().toString() + location.getLatitude() + " " + location.getLongitude() + " " + location.getTime() + " " + location.getSpeed() + "\n");
+        /*TextView traces = (TextView) findViewById(R.id.traces);
+        traces.setText(traces.getText().toString() + location.getLatitude() + " " + location.getLongitude() + " " + location.getTime() + " " + location.getSpeed() + "\n");*/
 
+        nbLoc++;
         TextView speed = (TextView) findViewById(R.id.speed);
         speed.setText(Format.convertToKmH(trajet.averageSpeed()));
 
         TextView distance = (TextView) findViewById(R.id.distance);
         distance.setText(Format.convertToKm(trajet.getDistance()));
+
+        TextView allure = (TextView) findViewById(R.id.allure);
+        allure.setText(Format.convertToMinKm(trajet.averageSpeed()));
+
+        TextView retard = (TextView) findViewById(R.id.retard);
+        retard.setText(Format.convertSecondsToMmSs(0));
+
+        TextView nb = (TextView) findViewById(R.id.nbLocations);
+        nb.setText(" "+nbLoc);
     }
 
     @Override

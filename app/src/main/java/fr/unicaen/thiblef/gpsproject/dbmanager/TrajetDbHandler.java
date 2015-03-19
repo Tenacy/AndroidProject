@@ -122,4 +122,16 @@ public class TrajetDbHandler {
     public int getParcoursId(Trajet trajet){
         return getParcoursId(trajet.getId());
     }
+
+    public boolean isTrajetReference(Trajet trajet){
+        int parcours_id = getParcoursId(trajet);
+        Parcours parcours = new ParcoursDbHandler(context).find(parcours_id);
+        return parcours.getIdTrajetReference() == trajet.getId();
+    }
+
+    public Trajet getTrajetRef(Trajet trajet){
+        int parcours_id = getParcoursId(trajet);
+        Parcours parcours = new ParcoursDbHandler(context).find(parcours_id);
+        return findById(parcours.getIdTrajetReference());
+    }
 }

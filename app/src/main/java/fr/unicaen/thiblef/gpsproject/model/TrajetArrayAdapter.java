@@ -34,7 +34,8 @@ public class TrajetArrayAdapter extends ArrayAdapter {
 
         TextView trajet_date = (TextView) convertView.findViewById(R.id.trajet_date);
         if(trajet.getId() == this.idTrajetReference){
-            trajet_date.setText(Format.convertToDate(trajet.getDate()) + " (Ref)");
+            trajet_date.setText(Format.convertToDate(trajet.getDate()) + " (Référence)");
+            trajet_date.setTextColor(convertView.getResources().getColor(R.color.blue));
         } else {
             trajet_date.setText(Format.convertToDate(trajet.getDate()));
         }

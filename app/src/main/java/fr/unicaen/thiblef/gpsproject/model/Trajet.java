@@ -3,6 +3,8 @@ package fr.unicaen.thiblef.gpsproject.model;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,12 +143,6 @@ public class Trajet {
         return 0;
     }
 
-    /*
-     * Retourne l'allure moyenne en min/km
-     */
-    public double pace() {
-        return averageSpeed() * 16.666666666667;
-    }
 
     public static Location getNormalCoordonate(Location t1, Location t2, Location d1){
         double xa = d1.getLatitude();
@@ -182,5 +178,75 @@ public class Trajet {
 
         h.setTime((long) time);
         return h;
+    }
+
+    public static boolean isOnSegment(Location t1, Location t2, Location h){
+        double latMin = Math.min(t1.getLatitude(), t2.getLatitude());
+        double latMax = Math.max(t1.getLatitude(), t2.getLatitude());
+        double lonMin = Math.min(t1.getLongitude(), t2.getLongitude());
+        double lonMax = Math.max(t1.getLongitude(), t2.getLongitude());
+        double lat = h.getLatitude();
+        double lon = h.getLongitude();
+        return lat > latMin && lat < latMax && lon > lonMin && lon < lonMax;
+    }
+
+    /*public static void calcNearestSegment(Location point,long date, Trajet trajet_ref){
+        if(trajet_ref.getLocations().size() < 2){
+            return;
+        }
+        long pointTime = point.getTime() - date;
+        Location min1 = trajet_ref.getLocations().get(0);
+        Location min2 = trajet_ref.getLocations().get(0);
+        double distanceToMin1 = Double.MAX_VALUE;
+        double distanceToMin2 = Double.MAX_VALUE;
+        long deltaTimeToMin1 = Long.MAX_VALUE;
+        long deltaTimeToMin2 = Long.MAX_VALUE;
+        for(Location location : trajet_ref.getLocations()){
+            long locationTime = location.getTime() - trajet_ref.getDate();
+            double distanceToLocation = point.distanceTo(location);
+            if(distanceToLocation < distanceToMin1){
+                distanceToMin2 = distanceToMin1;
+                min2 = min1;
+                distanceToMin1 = distanceToLocation;
+                min1 = location;
+            } else if(distanceToLocation < distanceToMin2){
+                distanceToMin2 = distanceToLocation;
+                min2 = location;
+            }
+        }
+    }*/
+
+    public List<Location> getCorrespondance(Trajet trajet_ref){
+        int iRef = 0;
+        int i = 0;
+        List<Location> refLocations = trajet_ref.getLocations();
+        List<Location> result = new ArrayList<>();
+        while(iRef < refLocations.size() && i < locations.size()){
+            Location t1 = refLocations.get(iRef);
+            Location t2 = refLocations.get(iRef+1);
+            Location d1 = locations.get(i);
+            Location h = getNormalCoordonate(t1, t2, d1);
+            if(isOnSegment(t1, t2, h)){
+                result.add(h);
+                i++;
+            } else {
+                iRef++;
+            }
+        }
+        return result;
+    }
+
+    public long getRetard(int locationIndice ,Trajet trajet_ref){
+       List<Location> correspondance = getCorrespondance(trajet_ref);
+       long timeActual = locations.get(locationIndice).getTime() - date;
+       long timeRef = correspondance.get(locationIndice).getTime() - trajet_ref.getDate();
+       return timeRef - timeActual;
+    }
+
+    public long getLiveRetard(Trajet trajet_ref){
+        List<Location> correspondance = getCorrespondance(trajet_ref);
+        long timeActual = locations.get(locations.size()-1).getTime() - date;
+        long timeRef = correspondance.get(locations.size()-1).getTime() - trajet_ref.getDate();
+        return timeRef - timeActual;
     }
 }

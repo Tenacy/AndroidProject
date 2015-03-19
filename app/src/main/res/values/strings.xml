@@ -36,4 +36,7 @@
     <string name="pause">PAUSE</string>
     <string name="stop">STOP</string>
     <string name="dist_parcourue">Distance parcourue</string>
+    <string name="allure">Allure</string>
+    <string name="avance">Avance/Retard</string>
+    <string name="temps">Temps</string>
 </resources>

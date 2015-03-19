@@ -17,6 +17,7 @@ import java.util.List;
 
 import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.activity.TrajetDetailActivity;
+import fr.unicaen.thiblef.gpsproject.activity.TrajetsListActivity;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
 import fr.unicaen.thiblef.gpsproject.model.Parcours;
@@ -107,16 +108,17 @@ public class TrajetsListFragment extends ListFragment {
         Parcours parcours = dbParcours.find(getArguments().getInt(ARG_PARCOURS_ID));
         if (item.getTitle().equals(getResources().getString(R.string.supprimer))) {
             dbTrajet.delete(trajet.getId());
-            if (trajet.getId() == dbParcours.find(getArguments().getInt(ARG_PARCOURS_ID)).getIdTrajetReference()) {
+            if (trajet.getId() == parcours.getIdTrajetReference()) {
                 List<Trajet> trajets = dbTrajet.findByParcoursId(parcours.getId());
                 if (!trajets.isEmpty()) {
-                    int idNewRef = trajets.get(0).getId();
                     parcours.setIdTrajetReference(dbTrajet.findByParcoursId(parcours.getId()).get(0).getId());
                 } else {
                     parcours.setIdTrajetReference(-1);
                 }
-                dbParcours.update(parcours);
             }
+            parcours.removeTrajet(trajet.getId());
+            parcours.update();
+            dbParcours.update(parcours);
             this.loadListView();
             Toast.makeText(this.getActivity(), getResources().getString(R.string.trajet_du) + " " + Format.convertToDate(trajet.getDate()) + " " + getResources().getString(R.string.supprime), Toast.LENGTH_SHORT).show();
         } else if (item.getTitle().equals(getResources().getString(R.string.definir_trajet_ref))) {

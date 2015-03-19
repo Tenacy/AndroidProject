@@ -40,13 +40,13 @@ public class TrajetsListActivity extends ActionBarActivity implements TrajetsLis
         fragment.loadListView();
     }
 
-    private void loadUi() {
+    public void loadUi() {
         Resources r = getApplicationContext().getResources();
 
         setTitle(r.getString(R.string.parcours) + " " + parcours.getName());
 
         TextView parcours_name = (TextView) findViewById(R.id.parcours_name);
-        parcours_name.setText(r.getString(R.string.allure_moyenne) + ": " + Format.convertToMinKm(parcours.getAveragePace()));
+        parcours_name.setText(r.getString(R.string.allure_moyenne) + ": " + Format.convertToMinKm(parcours.getAverageSpeed()));
 
         TextView parcours_distance = (TextView) findViewById(R.id.parcours_distance);
         parcours_distance.setText(Format.convertToKm(parcours.getDistance()));

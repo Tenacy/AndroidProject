@@ -151,7 +151,7 @@ public class GPSActivity extends ActionBarActivity {
     public void stop(View view) {
         isStarted = false;
         chronometer.stop();
-        Button button_start_pause = (Button) findViewById(R.id.button_start_pause);
+        Button button_start_pause = (Button) findViewById(R.id.button_start);
         button_start_pause.setBackgroundResource(R.color.emerald);
         button_start_pause.setText("START");
         Toast.makeText(this, "STOP", Toast.LENGTH_SHORT).show();
@@ -166,8 +166,8 @@ public class GPSActivity extends ActionBarActivity {
     }
 
     public void majUi(Location location){
-        TextView traces = (TextView) findViewById(R.id.traces);
-        traces.setText(traces.getText().toString()+location.getLatitude()+" " +location.getLongitude()+" "+location.getTime()+" "+location.getSpeed()+ "\n");
+        /*TextView traces = (TextView) findViewById(R.id.traces);
+        traces.setText(traces.getText().toString()+location.getLatitude()+" " +location.getLongitude()+" "+location.getTime()+" "+location.getSpeed()+ "\n");*/
 
         TextView speed = (TextView) findViewById(R.id.speed);
         speed.setText(Format.convertToKmH(trajet.averageSpeed()));
