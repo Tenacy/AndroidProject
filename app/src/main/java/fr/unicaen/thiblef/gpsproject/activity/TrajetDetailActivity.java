@@ -133,6 +133,8 @@ public class TrajetDetailActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, ParametresActivity.class);
+                startActivity(settingsIntent);
                 return true;
             case android.R.id.home:
                 Intent detailIntent = new Intent(this, TrajetsListActivity.class);

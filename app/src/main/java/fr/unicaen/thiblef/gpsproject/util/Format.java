@@ -41,7 +41,7 @@ public class Format {
 
     public static String convertToMinKm(double vitesse) {
         if(vitesse == 0){
-            return "0:00min/km";
+            return "0'00min/km";
         }
         double minkm = 60 / (vitesse * 3.6);
         int min = (int) minkm;
@@ -51,6 +51,6 @@ public class Format {
         if(sec < 10){
             secs = "0"+secs;
         }
-        return min + ":" + secs + "min/km";
+        return min + "'" + secs + "min/km";
     }
 }

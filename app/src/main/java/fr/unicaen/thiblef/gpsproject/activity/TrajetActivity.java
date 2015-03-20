@@ -43,40 +43,25 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trajet);
         parcours = new ParcoursDbHandler(this).find(getIntent().getIntExtra(ARG_PARCOURS_ID, 1));
-        trajet = new Trajet();
-        trajet.setDate(new Date().getTime());
         isStarted = false;
         actual_time = 0;
         nbLoc = 0;
-
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
         long minTime = 20 * 1000; //20s
         long minDistance = 25; //25m
-
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, this);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);
         setTitle(getResources().getString(R.string.title_activity_trajet)+" "+parcours.getName() );
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_trajet, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void start(View view) {
+        if ( !locationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            Toast.makeText(this, getResources().getString(R.string.activer_gps), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        trajet = new Trajet();
+        trajet.setDate(new Date().getTime());
         Button button = (Button) view;
         Button button_stop = (Button) findViewById(R.id.button_stop);
         isStarted = true;
@@ -150,12 +135,12 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        Toast.makeText(this, getResources().getString(R.string.gps_active), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        Toast.makeText(this, getResources().getString(R.string.gps_desactive), Toast.LENGTH_SHORT).show();
     }
 
     private int insertInDB() {

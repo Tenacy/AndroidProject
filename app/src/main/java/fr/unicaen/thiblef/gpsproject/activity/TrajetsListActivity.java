@@ -95,8 +95,11 @@ public class TrajetsListActivity extends ActionBarActivity implements TrajetsLis
                 startActivity(trajet_intent);
                 return true;
             case android.R.id.home:
-
                 navigateUpTo(new Intent(this, ParcoursListActivity.class));
+                return true;
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, ParametresActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

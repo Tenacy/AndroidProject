@@ -5,8 +5,8 @@
     <string name="parcours">Parcours</string>
     <string name="title_activity_trajet">Nouveau trajet</string>
     <string name="title_activity_trajet_detail">Nouveau trajet</string>
-    <string name="menu_trajet_action_new">Nouveau trajet</string>
     <string name="title_activity_gps">Nouveau trajet</string>
+    <string name="menu_trajet_action_new">Nouveau trajet</string>
     <string name="menu_parcours_action_new">Nouveau parcours</string>
     <string name="menu_parcours_action_settings">Paramètres</string>
     <string name="action_settings">Paramètres</string>
@@ -39,4 +39,7 @@
     <string name="allure">Allure</string>
     <string name="avance">Avance/Retard</string>
     <string name="temps">Temps</string>
+    <string name="gps_active">GPS activé</string>
+    <string name="gps_desactive">GPS désactivé</string>
+    <string name="activer_gps">Veuillez activer le GPS</string>
 </resources>

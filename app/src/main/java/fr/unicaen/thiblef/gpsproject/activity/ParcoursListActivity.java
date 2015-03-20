@@ -49,8 +49,8 @@ public class ParcoursListActivity extends ActionBarActivity
                 dialog.show(getFragmentManager(), "NewParcoursFragment");
                 return true;
             case R.id.action_settings:
-                //Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                //startActivity(settingsIntent);
+                Intent settingsIntent = new Intent(this, ParametresActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
