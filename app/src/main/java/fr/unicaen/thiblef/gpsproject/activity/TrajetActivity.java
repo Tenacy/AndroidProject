@@ -1,12 +1,15 @@
 package fr.unicaen.thiblef.gpsproject.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,8 +50,11 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         actual_time = 0;
         nbLoc = 0;
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
-        long minTime = 20 * 1000; //20s
-        long minDistance = 25; //25m
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int coeff = Integer.parseInt(sharedPref.getString("intervalle","1"));
+        long minTime = 20 * 1000 * coeff; //20s * coeff
+        long minDistance = 25 * coeff; //25m * coeff
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, this);
 
         chronometer = (Chronometer) findViewById(R.id.chrono);

@@ -37,9 +37,15 @@
         <activity
             android:name=".activity.TrajetDetailActivity"
             android:label="@string/title_activity_trajet_detail" />
+        <activity
+            android:name=".ParametresActivity"
+            android:label="@string/title_parametre_activity" >
+        </activity>
+
         <serv
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAEwgAbwMu6PVTUMB8GcURrZBPLwSfO0ic" />

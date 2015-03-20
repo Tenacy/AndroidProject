@@ -13,7 +13,6 @@ import fr.unicaen.thiblef.gpsproject.R;
 import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.fragment.NewParcoursFragment;
 import fr.unicaen.thiblef.gpsproject.fragment.ParcoursListFragment;
-import fr.unicaen.thiblef.gpsproject.fragment.TrajetsListFragment;
 import fr.unicaen.thiblef.gpsproject.fragment.UpdateParcoursFragment;
 import fr.unicaen.thiblef.gpsproject.model.Parcours;
 

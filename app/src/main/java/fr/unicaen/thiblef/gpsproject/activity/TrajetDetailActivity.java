@@ -2,7 +2,6 @@ package fr.unicaen.thiblef.gpsproject.activity;
 
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,9 +22,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.List;
 
 import fr.unicaen.thiblef.gpsproject.R;
-import fr.unicaen.thiblef.gpsproject.dbmanager.ParcoursDbHandler;
 import fr.unicaen.thiblef.gpsproject.dbmanager.TrajetDbHandler;
-import fr.unicaen.thiblef.gpsproject.model.Parcours;
 import fr.unicaen.thiblef.gpsproject.model.Trajet;
 import fr.unicaen.thiblef.gpsproject.util.Format;
 import fr.unicaen.thiblef.gpsproject.xml.GPXReader;

@@ -32,11 +32,6 @@ public class TrajetsListFragment extends ListFragment {
 
     public static final String ARG_PARCOURS_ID = "parcours_id";
 
-    /**
-     * Chemin vers le dossier Download
-     */
-    private static final String DOWNLOAD_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-
     private Callbacks mCallbacks;
 
     public interface Callbacks {
@@ -98,7 +93,6 @@ public class TrajetsListFragment extends ListFragment {
         menu.setHeaderTitle("Trajet du " + Format.convertToDate(trajet.getDate()));
         menu.add(0, v.getId(), 0, getResources().getString(R.string.supprimer));
         menu.add(0, v.getId(), 0, getResources().getString(R.string.definir_trajet_ref));
-        menu.add(0, v.getId(), 0, getResources().getString(R.string.telecharger_gpx));
     }
 
     @Override
@@ -126,13 +120,6 @@ public class TrajetsListFragment extends ListFragment {
             dbParcours.update(parcours);
             this.loadListView();
             Toast.makeText(this.getActivity(), getResources().getString(R.string.trajet_du) + " " + Format.convertToDate(trajet.getDate()) + " " + getResources().getString(R.string.mis_en_ref) + " ", Toast.LENGTH_SHORT).show();
-        } else if (item.getTitle().equals(getResources().getString(R.string.telecharger_gpx))) {
-            //Récupération des points gpx
-            GPXReader gpxReader = new GPXReader(getActivity(), trajet);
-            gpxReader.parse();
-            //On recréer le fichier dans le répertoire download
-            new GPXWriter(getActivity(), trajet, DOWNLOAD_PATH);
-
         }
         return super.onContextItemSelected(item);
     }

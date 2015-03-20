@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Runnier</string>
     <string name="title_parcours_detail">Parcours</string>
     <string name="parcours">Parcours</string>
@@ -42,4 +43,6 @@
     <string name="gps_active">GPS activé</string>
     <string name="gps_desactive">GPS désactivé</string>
     <string name="activer_gps">Veuillez activer le GPS</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
