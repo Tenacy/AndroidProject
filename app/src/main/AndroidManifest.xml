@@ -37,14 +37,7 @@
         <activity
             android:name=".activity.TrajetDetailActivity"
             android:label="@string/title_activity_trajet_detail"></activity>
-        <activity
-            android:name=".activity.GPSActivity"
-            android:label="@string/title_activity_gps"></activity>
 
-        <service
-            android:name=".service.GPSLocation"
-            android:enabled="true"
-            android:exported="true"></service>
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
