@@ -3,8 +3,6 @@ package fr.unicaen.thiblef.gpsproject.model;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +29,9 @@ public class Trajet {
      */
     public long date;
 
-
     protected List<Location> locations;
+
+    protected List<Location> interpolations;
 
     public Trajet() {
         this(0, 0, 0, 0, new ArrayList<Location>());
@@ -42,6 +41,7 @@ public class Trajet {
         id = 0;
         this.date = 0; //A CHANGER
         this.locations = Locations;
+        this.interpolations = new ArrayList<>();
         calculateDistance();
         calculateTime();
     }
@@ -88,6 +88,10 @@ public class Trajet {
 
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public List<Location> getInterpolations() {
+        return interpolations;
     }
 
     public void setLocations(List<Location> locations) {
@@ -144,7 +148,7 @@ public class Trajet {
     }
 
 
-    public static Location getNormalCoordonate(Location t1, Location t2, Location d1){
+    public static Location getNormalCoordonate(Location t1, Location t2, Location d1) {
         double xa = d1.getLatitude();
         double ya = d1.getLongitude();
 
@@ -155,39 +159,39 @@ public class Trajet {
         double yc = t2.getLongitude();
 
         //Calcul du coefficient directeur (m) de la droite (d) passant par t1 et t2
-        double m = (xb-xc) / (yb-yc);
+        double m = (xb - xc) / (yb - yc);
 
         //Détermination de l'ordonnée à l'origine (n)
-        double n = yb-m*xb;
+        double n = yb - m * xb;
 
         //Calcul du coefficient directeur (m') de la normale à d
-        double mp = (-1/m);
+        double mp = (-1 / m);
 
         //Détermination de l'ordonnée à l'origine (n')
-        double np = ya-mp*xa;
+        double np = ya - mp * xa;
 
         //Calcul des coordonnées de H(x,y) l'intersection des deux droites
-        double y = ((m*m+np+n)/m*m+1);
-        double x = y*m+np*m;
+        double y = ((m * m + np + n) / m * m + 1);
+        double x = y * m + np * m;
 
         Location h = new Location(LocationManager.GPS_PROVIDER);
         h.setLatitude(x);
         h.setLongitude(y);
-        double delta = h.distanceTo(t1)/t1.distanceTo(t2);
-        double time = delta * (t2.getTime()-t1.getTime());
+        double delta = h.distanceTo(t1) / t1.distanceTo(t2);
+        double time = delta * (t2.getTime() - t1.getTime());
 
         h.setTime((long) time);
         return h;
     }
 
-    public static boolean isOnSegment(Location t1, Location t2, Location h){
+    public static boolean isOnSegment(Location t1, Location t2, Location h) {
         double latMin = Math.min(t1.getLatitude(), t2.getLatitude());
         double latMax = Math.max(t1.getLatitude(), t2.getLatitude());
         double lonMin = Math.min(t1.getLongitude(), t2.getLongitude());
         double lonMax = Math.max(t1.getLongitude(), t2.getLongitude());
         double lat = h.getLatitude();
         double lon = h.getLongitude();
-        return lat > latMin && lat < latMax && lon > lonMin && lon < lonMax;
+        return lat >= latMin && lat <= latMax && lon >= lonMin && lon <= lonMax;
     }
 
     /*public static void calcNearestSegment(Location point,long date, Trajet trajet_ref){
@@ -216,37 +220,50 @@ public class Trajet {
         }
     }*/
 
-    public List<Location> getCorrespondance(Trajet trajet_ref){
+    public void calculateInterpolations(Trajet trajet_ref) {
         int iRef = 0;
         int i = 0;
-        List<Location> refLocations = trajet_ref.getLocations();
-        List<Location> result = new ArrayList<>();
-        while(iRef < refLocations.size() && i < locations.size()){
-            Location t1 = refLocations.get(iRef);
-            Location t2 = refLocations.get(iRef+1);
-            Location d1 = locations.get(i);
-            Location h = getNormalCoordonate(t1, t2, d1);
-            if(isOnSegment(t1, t2, h)){
-                result.add(h);
+        int val = 0;
+        while (i < locations.size() || iRef < trajet_ref.getLocations().size() - 1) {
+            val = calculateInterpolations(trajet_ref, locations.get(i), iRef);
+            if (val == -1) {
                 i++;
+            } else {
+                iRef = val;
+            }
+            i++;
+        }
+    }
+
+    protected int calculateInterpolations(Trajet trajet_ref, Location newLocation, int reference) {
+        int iRef = reference;
+        List<Location> refLocations = trajet_ref.getLocations();
+        Location t1, t2, h;
+        while (iRef < refLocations.size() - 1) {
+            t1 = refLocations.get(iRef);
+            t2 = refLocations.get(iRef + 1);
+            h = getNormalCoordonate(t1, t2, newLocation);
+            if (isOnSegment(t1, t2, h)) {
+                interpolations.add(h);
+                return iRef;
             } else {
                 iRef++;
             }
         }
-        return result;
+        return -1;
     }
 
-    public long getRetard(int locationIndice ,Trajet trajet_ref){
-       List<Location> correspondance = getCorrespondance(trajet_ref);
-       long timeActual = locations.get(locationIndice).getTime() - date;
-       long timeRef = correspondance.get(locationIndice).getTime() - trajet_ref.getDate();
-       return timeRef - timeActual;
+    public long getRetard(int locationIndice, Trajet trajet_ref) {
+        //List<Location> correspondance = getCorrespondance(trajet_ref);
+        long timeActual = locations.get(locationIndice).getTime() - date;
+        long timeRef = interpolations.get(locationIndice).getTime() - trajet_ref.getDate();
+        return timeRef - timeActual;
     }
 
-    public long getLiveRetard(Trajet trajet_ref){
-        List<Location> correspondance = getCorrespondance(trajet_ref);
-        long timeActual = locations.get(locations.size()-1).getTime() - date;
-        long timeRef = correspondance.get(locations.size()-1).getTime() - trajet_ref.getDate();
+    public long getLiveRetard(Trajet trajet_ref) {
+        // List<Location> correspondance = getCorrespondance(trajet_ref);
+        long timeActual = locations.get(locations.size() - 1).getTime() - date;
+        long timeRef = interpolations.get(locations.size() - 1).getTime() - trajet_ref.getDate();
         return timeRef - timeActual;
     }
 }
