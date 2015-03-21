@@ -40,6 +40,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
     private Chronometer chronometer;
     private Parcours parcours;
     private int nbLoc;
+    private long retard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         isStarted = false;
         actual_time = 0;
         nbLoc = 0;
+        retard = 0;
         locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -128,7 +130,7 @@ public class TrajetActivity extends ActionBarActivity implements LocationListene
         allure.setText(Format.convertToMinKm(trajet.averageSpeed()));
 
         TextView retard = (TextView) findViewById(R.id.retard);
-        retard.setText(Format.convertSecondsToMmSs(0));
+        retard.setText(Format.convertSecondsToMmSs(this.retard));
 
         TextView nb = (TextView) findViewById(R.id.nbLocations);
         nb.setText(" "+nbLoc);

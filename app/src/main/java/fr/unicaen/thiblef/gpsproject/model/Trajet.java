@@ -253,17 +253,37 @@ public class Trajet {
         return -1;
     }
 
-    public long getRetard(int locationIndice, Trajet trajet_ref) {
-        //List<Location> correspondance = getCorrespondance(trajet_ref);
+    public List<Location> getCorrespondance(Trajet trajet_ref){
+        int iRef = 0;
+        int i = 0;
+        List<Location> refLocations = trajet_ref.getLocations();
+        List<Location> result = new ArrayList<>();
+        while(iRef < refLocations.size() && i < locations.size()){
+            Location t1 = refLocations.get(iRef);
+            Location t2 = refLocations.get(iRef+1);
+            Location d1 = locations.get(i);
+            Location h = getNormalCoordonate(t1, t2, d1);
+            if(isOnSegment(t1, t2, h)){
+                result.add(h);
+                i++;
+            } else {
+                iRef++;
+            }
+        }
+        return result;
+    }
+
+    public long getRetard(int locationIndice ,Trajet trajet_ref){
+        List<Location> correspondance = getCorrespondance(trajet_ref);
         long timeActual = locations.get(locationIndice).getTime() - date;
-        long timeRef = interpolations.get(locationIndice).getTime() - trajet_ref.getDate();
+        long timeRef = correspondance.get(locationIndice).getTime() - trajet_ref.getDate();
         return timeRef - timeActual;
     }
 
-    public long getLiveRetard(Trajet trajet_ref) {
-        // List<Location> correspondance = getCorrespondance(trajet_ref);
-        long timeActual = locations.get(locations.size() - 1).getTime() - date;
-        long timeRef = interpolations.get(locations.size() - 1).getTime() - trajet_ref.getDate();
-        return timeRef - timeActual;
+    public long getLiveRetard(Trajet trajet_ref){
+        List<Location> correspondance = getCorrespondance(trajet_ref);
+        long timeActual = locations.get(locations.size()-1).getTime() - date;
+        long timeRef = correspondance.get(locations.size()-1).getTime() - trajet_ref.getDate();
+    return timeRef - timeActual;
     }
 }
