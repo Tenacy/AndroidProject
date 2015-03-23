@@ -11,7 +11,7 @@
     <string-array name="pref_intervalle_list_titles">
         <item>Elevée (Forte consommation de batterie)</item>
         <item>Moyenne (Consommation de la batterie amoindrie) </item>
-        <item>Faible (Sauvegarde optimale de la batterie)(</item>
+        <item>Faible (Sauvegarde optimale de la batterie)</item>
     </string-array>
     <string-array name="pref_intervalle_list_values">
         <item>1</item>
