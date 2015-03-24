@@ -1,0 +1,161 @@
+%***************************************
+% Paquet : MonPaquet
+% Auteur : Jean
+% Version: 1.0
+% Date de création : 2013/09/27
+%***************************************
+
+
+% On spécifie la version de LaTeX nécessaire
+
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+
+% On indique ici le nom de l'extension crée. L'argument optionnel permet de préciser la date de création de l'extension.
+
+\ProvidesPackage{MonPaquet}[2013/09/27]
+
+
+%==================
+% PACKAGES
+%==================
+
+% Chargement des extensions requises au bon fonctionnement de l'extension et du document.
+
+\RequirePackage[utf8]{inputenc}% Encodage
+\RequirePackage[T1]{fontenc}% utilisation de tout les caractères du clavier
+\RequirePackage{lmodern}% Police utilisé
+\RequirePackage[table]{xcolor}% Pour gère les couleur
+\RequirePackage{setspace}% Pour pourvoir définir les interlignes
+\RequirePackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}% Dimension du document
+\RequirePackage{graphicx}% Pour insérer des figure (images, etc....)
+\RequirePackage{float}% Permet de gèrer les images et les tableaux avec une plus grande prècisions (environnement table)
+\RequirePackage[french]{babel}% Spécifie que l'on écrit en français
+%\RequirePackage{biblatex}% Package pour la bibliographie 
+
+\addto\captionsfrench{\def\tablename{Tableau}}% Ceci permet de changer le nom par défaut Table lorsque l'on légende un tableau
+
+\RequirePackage{url}% Pour gèrer les url
+\RequirePackage{soul}% Permet d'utiliser la commande \ul pour souligner.
+\RequirePackage{wrapfig} % Permet d'utiliser l'environnement wrapfigure pour placer une image à l'intérieur d'un texte
+\RequirePackage{listings} % Permet de faire référence à du code informatique
+\RequirePackage{textcomp} % Caractère additionnels
+\RequirePackage{colortbl}% Permet de colorier les cellules, colonnes, lignes d'un tableau
+\RequirePackage{fancybox}% Permet d'utiliser des commandes pour personnaliser les boîtes
+\RequirePackage{upquote}% Permet d'utiliser les bon caractères pour la commande \verb
+\RequirePackage{multirow}% Permet d'utiliser la commande \multirow pour fusionner des lignes d'un tableau
+%\RequirePackage{slashbox}% Permet de créer une slashbox pour un tableau
+\RequirePackage{Langage}
+\RequirePackage{multicol}
+\RequirePackage{dirtree}
+\RequirePackage{hyperref}
+
+\newif \if@lennyChap \@lennyChapfalse
+\newif \if@glennChap \@glennChapfalse
+\newif \if@paysage \@paysagefalse
+\newif \if@pdfpages \@pdfpagesfalse
+\newif \if@shorttoc \@shorttocfalse
+\newif \if@bclogo \@bclogofalse
+
+\DeclareOption{bclogo}{\@bclogotrue}
+\DeclareOption{shorttoc}{\@shorttoctrue}
+\DeclareOption{pdfpages}{\@pdfpagestrue}
+\DeclareOption{lenny}{\@lennyChaptrue}
+\DeclareOption{lscape}{\@paysagetrue}
+\DeclareOption{glenn}{\@glennChaptrue}
+
+\ProcessOptions
+
+\if@lennyChap
+	\RequirePackage[Lenny]{fncychap} % Permet de styliser les chapitres
+\fi
+
+\if@glennChap
+	\RequirePackage[Glenn]{fncychap} % Permet de styliser les chapitres
+\fi
+
+\if@paysage
+	\RequirePackage{lscape} % Permet d'utiliser l'environnement landscape qui permet d'obtenir une page (spécifique, pas tout le doc) en paysage.
+\fi
+
+\if@pdfpages
+	\RequirePackage{pdfpages} % Permet d'inclure certaines pages d'un document pdf existant. la commande \includegraphics n'étant adapté que pour les images
+\fi
+
+\if@shorttoc
+	\RequirePackage{shorttoc} % Permet d'avoir un sommaire simplifier au début
+\fi
+
+\if@bclogo
+	\RequirePackage[tikz]{bclogo} % Permet de créer des boîtes stylisé avec des images.
+\fi
+
+
+%========================
+% COMMANDES PERSONNELLES
+%========================
+
+\hypersetup{pdfborder={0 0 0},colorlinks}
+
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% \remarque{}
+% 
+% Cette commande permet de créer une boîte dont le titre
+% principale s'appelle "Remarque". La boîte contient 
+% la remarque en elle-même.
+%++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\newcommand{\remarque}[1]{\begin{center} % On centre
+							\boxput*(0,1) % On demande à ce que la première boîte soit au dessus (*) et qu'elle se place en haut au centre (0,1)
+							{%	
+								\colorbox{white}{\bfseries Remarque} % la boîte du dessus sera blanche 
+							}%
+							{%
+								\setlength{\fboxsep}{13pt}% On aère la boîte
+								\fbox{\begin{minipage}{14cm}#1\end{minipage}}% Ceci contiendra la remarque en elle-même.
+							}%
+							\end{center}}%
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% \begin{note}
+%
+% Cette environnement crée une boîte grâce au paquet 
+% bclogo. L'image associé est une bulle info
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\newenvironment{note}{\vspace{0.5cm}\begin{bclogo}[noborder=true, logo=\bcinfo]{\hspace{5pt} Remarque}}{\end{bclogo}\vspace{0.5cm}}
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% \begin{enonce}
+%
+% Cette environnement crée une boîte grâce au paquet 
+% bclogo. L'image associé est un crayon
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\newenvironment{enonce}{\vspace{0.5cm}\begin{bclogo}[noborder=true, logo=\bccrayon]{\hspace{5pt} Énoncé}}{\end{bclogo}\vspace{0.5cm}}
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% \begin{img}
+%
+% Cette environnement permet d'inclure une image flottante
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\newenvironment{img}{\begin{figure}[H]%
+						\begin{center}}%
+					{\end{center}%
+					 \end{figure}}
+
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+% \lstlistingname
+%
+% Redéfinition pour le nom des légendes listings
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\renewcommand{\lstlistingname}{Code}
+
+\renewcommand{\lstlistlistingname}{Liste des \lstlistingname s}
+% Redéfinie la commande lstlistingname
+%+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\endinput % Indique la fin de l'extension
+
