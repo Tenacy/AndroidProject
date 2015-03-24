@@ -1,0 +1,24 @@
+\begin{java}[L'ajout de point à un trajet]  
+public void addLocation(Location l) {
+	//Si il n'y a pas de points d'enregistres
+	if (locations.size() == 0) {
+		distance = 0;
+		locations.add(l);
+		temps = 0;
+	} else {
+	
+	//On recupere la derniere position 
+	Location last = getLastPosition();
+	
+	//On augmente la distance total du trajet 
+	distance += last.distanceTo(l);
+	locations.add(l);
+ 	
+ 	//On incremente egalement le temps 
+	if (locations.size() == 1) {
+		temps = 0;
+	} 
+	temps += ((l.getTime() / 1000) - (last.getTime() / 1000));   
+	}
+}
+\end{java}
