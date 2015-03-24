@@ -101,19 +101,23 @@ public class Trajet {
     }
 
     public void addLocation(Location l) {
+		//Si il n'y a pas de points d'enregistrés
         if (locations.size() == 0) {
             distance = 0;
             locations.add(l);
             temps = 0;
         } else {
+			//On récupère la dernière position
             Location last = getLastPosition();
+			//On augmente la distance total du trajet
             distance += last.distanceTo(l);
             locations.add(l);
+			//On incrémente également le temps
             if (locations.size() == 1) {
-                temps = ((l.getTime() / 1000) - (last.getTime() / 1000));
-            } else {
-                temps += ((l.getTime() / 1000) - (last.getTime() / 1000));
-            }
+                temps = 0;
+            } 
+            temps += ((l.getTime() / 1000) - (last.getTime() / 1000));
+            
         }
     }
 
