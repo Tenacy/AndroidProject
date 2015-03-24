@@ -1,18 +1,25 @@
 \documentclass[a4paper,12pt]{report}
 \usepackage[lenny]{MonPaquet}
-
+\usepackage[toc,page]{appendix}
 \begin{document}
 
 	\include{remerciements}
 	\tableofcontents	
 	\include{introduction}	
+	
+	\part{Présentation et objectifs}
 	\include{chapitre1}
 	\include{chapitre2}
+	
 	\part{Analyse et implémentations}
 	\include{chapitre3}
 	\include{chapitre4}
+	
 	\part{Détail sur la réalisation}
+	\include{chapitre5}
 	\include{chapitre6}
+	
+	\part{Bilan du projet}
 	\include{glossaire}
 	
 	\newpage
