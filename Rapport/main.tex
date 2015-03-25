@@ -1,9 +1,9 @@
 \documentclass[a4paper,12pt]{report}
-\usepackage[lenny]{MonPaquet}
+\usepackage[lenny,pdfpages]{MonPaquet}
 \usepackage[toc,page]{appendix}
 \usepackage{amsmath,amsfonts,amssymb}
 \begin{document}
-
+	\includepdf[pages={1,2,3}]{garde}	
 	\include{remerciements}
 	\tableofcontents	
 	\include{introduction}	
@@ -21,12 +21,17 @@
 	\include{chapitre6}
 	
 	\part{Bilan du projet}
+	\include{chapitre7}
+	\include{chapitre8}
+	\include{chapitre9}
+
+	\include{conclusion}
 	\include{glossaire}
-	\include{sources}
-	
+	\include{sources}	
 	\newpage
 	\appendix
 	\include{annexes}
+	\includepdf{resume}
 \end{document}
 
 
