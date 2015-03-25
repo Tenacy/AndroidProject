@@ -1,12 +1,32 @@
 \chapter{La gestion des points}
 
-\section{La capture de points}
+\section{La capture de points sous Android}
+Sous Android, la localisation d'un appareil utilisant une puce GPS est rendue possible. Bien évidemment, plus la puce est performante plus la localisation de l’appareil sera aisée. La capture de points se fait grâce à trois fournisseurs (\textit{providers}) différents.
+
 \subsection{Les \textit{providers}}
-\subsection{Le GPS}
+Nous parlerons ici uniquement des providers nécessaire au fonctionnement de notre application à savoir le \textit{NETWORK\_PROVIDER} et \textit{GPS\_PROVIDER} cependant un récapitulatif des providers est disponible à l'Annexe \ref{Annexe3}.
+
+\subsubsection{Le \textit{NETWORK\_PROVIDER}}
+Ce fournisseur détermine la position du l'appareil en fonction des antennes téléphoniques et des points d'accès au Wi-fi. Il a une précision d'environ 60 mètres. Mais fournis des points beaucoup plus rapidement que le GPS. Nous l'utilisons dans notre application le temps que la puce se synchronise avec le GPS.
+
+\subsubsection{Le \textit{GPS\_PROVIDER}}
+De tous les fournisseurs, celui-ci est de loin de plus précis puisqu'il permet de localiser un appareil avec une précision de 6 mètres. Malheureusement, pour se faire, la puce de l'appareil doit se connectée à un GPS est cela peut prendre beaucoup de temps. De plus, tant l'acquisition n'a pas été établie, aucun point ne sera fourni.
+
+\begin{note}
+L'utilisation du service de localisation sous Android nécessite des permissions que l'on doit ajouter au \textit{manifest} (Partie \ref{manifest}).
+\end{note}
+
 \subsection{Le LocationManager}
 \label{locationManager}
+Le \verb!LocationManager! représente le service de gestion de capture de points. C'est grâce à cette classe que la localisation de point peut se faire. Son fonctionnement est brièvement représenté sur le diagramme \ref{Diagramme Location Manager}
+\begin{img}  
+	\includegraphics[scale=0.7]{img/LocationManager.png}
+	\caption{Fonctionnement du Location Manager}
+	\label{Diagramme Location Manager}
+\end{img}
+
 \section{Projection d'un point}
-Comme on a pu le voir dans la partie précédente, la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
+Dans la partie précédente, nous avons vu que la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
 
 \begin{img}  
 	\includegraphics[scale=1]{img/Trajet.png}
