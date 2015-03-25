@@ -1,11 +1,12 @@
 \documentclass[a4paper,12pt]{report}
-\usepackage[lenny, bclogo]{MonPaquet}
+
+\usepackage[lenny,pdfpages, bclogo]{MonPaquet}
+\usepackage[toc,page]{appendix}
 \usepackage[xindy]{glossaries}
-\usepackage[page]{appendix}
 \usepackage{amsmath,amsfonts,amssymb}
 \makeglossaries
 \begin{document}
-
+	\includepdf[pages={1,2,3}]{garde}	
 	\include{remerciements}
 	\tableofcontents	
 	\include{introduction}	
@@ -23,14 +24,19 @@
 	\include{chapitre6}
 	
 	\part{Bilan du projet}
+	\include{chapitre7}
+	\include{chapitre8}
+	\include{chapitre9}
+
+	\include{conclusion}
 	
 	\printglossaries
 	\include{glossaire}
-	\include{sources}
-	
+	\include{sources}	
 	\newpage
 	\appendix
 	\include{annexes}
+	\includepdf{resume}
 \end{document}
 
 
