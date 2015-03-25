@@ -2,19 +2,20 @@
 \section{Le choix du langage}
 
 \subsection{Javascript}
-Nous avons réalisé une étude sur les différentes technologies que nous pouvions employées pour réaliser ce projet. En effet, avec les technologies Javascript émergentes, l'utilisation de Cordova et Phonegap permettait de réaliser une application compatible avec l'ensemble des smartphones présent sur le marché actuel. Malheureusement, ces technologies sont plutôt orientées sur des technologies web. Le développement du code avec ces technologies nécessite une compilation afin d'être lisible par le smartphone sur lequel il est déployé. 
+Nous avons réalisé une étude sur les différentes technologies que nous pouvions employées pour réaliser ce projet. En effet, avec les technologies Javascript émergentes, l'utilisation de \newglossaryentry{Cordova et Phonegap}{name=Apache Cordova ou Phonegap, description={est un framework open-source développé par la Fondation Apache. Il permet de créer des applications pour différentes plates-formes (Android, Firefox OS, iOS, Ubuntu, Windows 8...) en HTML, CSS et JavaScript.}
+} permettait de réaliser une application compatible avec l'ensemble des smartphones présent sur le marché actuel. Malheureusement, ces frameworks sont plutôt orientées sur des technologies web. Le développement du code avec ces technologies nécessite donc une compilation afin d'être lisible par le smartphone sur lequel il est déployé. 
 
 \subsection{Java}
 Le développement sous Android se fait dans un langage très populaire dans les systèmes embarqués, le Java. De plus, la compilation du langage est optimisée en fonction de l’appareil sur lequel il est déployé. De ce fait, l’exécution d'une application est plus performante si elle est conçue dans le langage natif au smartphone(Java pour Android, Objectif-C pour iOS). Notre application utilisant le GPS du smartphone, nous avons opté pour un développement en Java afin d'optimiser les connexions avec le satellite servant à géolocaliser le téléphone. Android étant mis à disposition par Google, il existe une documentation extrêmement fournie par l'API Google\footnote{\href{http://developer.android.com/index.html}{Google API}}
 
 \section{Le stockage de données}
-Pour un bon fonctionnement, l'application doit stockées des informations concernant les parcours et les trajets. 
+Pour un bon fonctionnement, l'application doit stocker des informations concernant les parcours et les trajets. 
 
 \subsection{SQLite}
 Sous Android (et autres smartphones), le stockage des données se fait via une base de données en SQLite. SQLite est une bibliothèque proposant un moteur de base de données relationnelles utilisant le langage SQL. Elle est plus légère que ses homologues MySQL et PostgreSQL car elle n'intègre pas le schéma habituel Client-Serveur. En effet, l'ensemble des données est stocké dans un fichier indépendant d'Android et directement intégré à l'application.
 
 \subsection{Le format GPX}
-Le format GPX est un format XML conçu spécialement pour représenter un ensemble de points GPS ayant une latitude et une longitude à un instant t donné. L'utilisation de fichier GPX est très intéressant dans notre projet dans la mesure où le GPS d'Android nous fournit des points devant d'être stockés mais sans encombrer la base. En effet, SQLite n'est pas très adapté au stockage de grosses données (big data). De plus, cette séparation permet d'extraire facilement les données liées à la représentation du trajet effectué.
+Le GPX est un format XML conçu spécialement pour représenter un ensemble de points GPS ayant une latitude et une longitude à un instant t donné. L'utilisation de fichiers GPX est très intéressante dans notre projet dans la mesure où le GPS d'Android nous fournit des points devant d'être stockés mais sans encombrer la base. En effet, SQLite n'est pas très adapté au stockage de grosses données (big data). De plus, cette séparation permet d'extraire facilement les données liées à la représentation du trajet effectué.
 
 \begin{xml}[Exemple de fichier GPX]
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
@@ -39,7 +40,7 @@ Le format GPX est un format XML conçu spécialement pour représenter un ensemb
 \end{xml}
 
 \subsection{L'analyseur syntaxique}
-L'utilisation de fichier GPX implique forcement un système de lecture et d'écriture de fichier XML (parseur). En Java, il existe deux grandes familles de parseurs XML, les parseurs utilisant SAX et les parseurs utilisant le DOM.
+L'utilisation de fichier GPX implique forcément un système de lecture et d'écriture de fichier XML (\textit{parser}). En Java, il existe deux grandes familles de parseurs XML, les parseurs utilisant SAX et les parseurs utilisant le DOM.
 
 \subsubsection{Les parseurs DOM}
 Les parseurs DOM analysent la structure même d'un document.Ils stockent en mémoire l'ensemble des balises XML (le DOM) afin de pouvoir retrouver n'importe quel élément du document. l'inconvénient vient du fait qu'un document ne peut pas être plus gros que la mémoire vive. 

@@ -4,7 +4,7 @@
 \subsection{Les \textit{providers}}
 \subsection{Le GPS}
 \subsection{Le LocationManager}
-
+\label{locationManager}
 \section{Projection d'un point}
 Comme on a pu le voir dans la partie précédente, la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
 

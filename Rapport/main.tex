@@ -1,7 +1,9 @@
 \documentclass[a4paper,12pt]{report}
 \usepackage[lenny,pdfpages]{MonPaquet}
 \usepackage[toc,page]{appendix}
+\usepackage[xindy]{glossaries}
 \usepackage{amsmath,amsfonts,amssymb}
+\makeglossaries
 \begin{document}
 	\includepdf[pages={1,2,3}]{garde}	
 	\include{remerciements}
@@ -26,6 +28,8 @@
 	\include{chapitre9}
 
 	\include{conclusion}
+	
+	\printglossaries
 	\include{glossaire}
 	\include{sources}	
 	\newpage
