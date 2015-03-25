@@ -1,7 +1,9 @@
 \documentclass[a4paper,12pt]{report}
 \usepackage[lenny]{MonPaquet}
-\usepackage[toc,page]{appendix}
+\usepackage[xindy]{glossaries}
+\usepackage[page]{appendix}
 \usepackage{amsmath,amsfonts,amssymb}
+\makeglossaries
 \begin{document}
 
 	\include{remerciements}
@@ -21,6 +23,8 @@
 	\include{chapitre6}
 	
 	\part{Bilan du projet}
+	
+	\printglossaries
 	\include{glossaire}
 	\include{sources}
 	
