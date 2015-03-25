@@ -56,18 +56,32 @@ Comme $ H \in d$ et $H \in d'$, il résout le système suivant :
     &\begin{cases}
    		 & y_h = -\dfrac{1}{m}x_h + n'\\
    		 & y_h = mx_h + n
-    \end{cases} \\
+    \end{cases} 
     \Leftrightarrow
-    &\begin{cases}
+    \begin{cases}
    		& x_h = -my_h + mn'\\
     	& y_h = mx_h + n
-    \end{cases} \\
-     \Leftrightarrow
-    &\begin{cases}
+    \end{cases} 
+    \Leftrightarrow
+    \begin{cases}
    		& x_h = -my_h + mn'\\
     	& y_h = -y_hm^2 + m^2n' + n
+    \end{cases} \\
+    \Leftrightarrow
+    \label{systeme}
+    &\begin{cases}
+   		& x_h = \dfrac{(m^2+n'+n)m}{m^2+1} + n'm \\
+    	& y_h = \dfrac{(m^2+n'+n)m}{m^2+1}
     \end{cases}
 \end{align}
+En remplaçant les valeurs dans l'équation \eqref{systeme}, on obtient :
+\begin{align}
+	\begin{cases}
+		& x_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1} + \left( y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a\right) \left( \dfrac{x_b - x_c}{y_b - y_c}\right)  \\
+    	& y_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1}
+	\end{cases}
+\end{align}
+
 \subsection{Interpolation temporelle}
 
 \section{Détermination d'un segment}
