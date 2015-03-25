@@ -18,9 +18,10 @@ L'utilisation du service de localisation sous Android nécessite des permissions
 
 \subsection{Le LocationManager}
 \label{locationManager}
-Le \verb!LocationManager! représente le service de gestion de capture de points. C'est grâce à cette classe que la localisation de point peut se faire. Son fonctionnement est brièvement représenté sur le diagramme \ref{Diagramme Location Manager}
+Le \verb!LocationManager! représente le service de gestion de capture de points. C'est grâce à cette classe que la localisation de point peut se faire. Son fonctionnement est brièvement représenté par le diagramme \ref{Diagramme Location Manager}. Son instanciation se fait grâce aux services Android. Une fois l'instance obtenue, l'appel à la méthode \verb!requestLocationUpdates! doit être fait en précisant le \textit{provider} utilisé ainsi que deux variables et un \verb!LocationListener!. Les deux variables correspondent au minimum de temps et de distance nécessaire avant la capture d'un nouveau point. La valeur de ces variables est inversement proportionnelle à la consommation de la batterie. A chaque fois qu'un nouveau point est trouvé, le \verb!LocationListener!, qui écoute l'arrivée d'une nouvelle \verb!Location!, va pouvoir l'ajouter  à la liste des points du trajet. C'est également le \verb!LocationListener! qui va vérifier la bonne continuité du signal. En cas de modification, de perte ou de récupération du signal, un appel est effectué via les méthodes correspondantes.
+
 \begin{img}  
-	\includegraphics[scale=0.7]{img/LocationManager.png}
+	\includegraphics[scale=0.65]{img/LocationManager.png}
 	\caption{Fonctionnement du Location Manager}
 	\label{Diagramme Location Manager}
 \end{img}
@@ -39,7 +40,7 @@ On pose trois points $ A(x_a,y_a) $, $ B(x_b,y_b) $ et $ C(x_c,y_c) $ et nous ch
 Pour ce faire, nous devons commencer par calculer l'équation de la droite $ d $ passant par les points $B$ et $C$.
 On pose donc : 
 \[
- d(x) = mx + n
+ 	d(x) = mx + n
 \]
 On cherche à déterminer le coefficient directeur de la droite ($m$). Comme $B \in d$ et $C \in d$, on a :
 \[
@@ -51,8 +52,8 @@ Comme le point $B \in (d)$, il résout l'équation :
    \Leftrightarrow n = y_b - mx_b
 \]
 On cherche maintenant à déterminer l'équation de la droite $ d' $ passant par $ A $ tel que $ (d)\bot (d') $. On pose alors, 
- \[
- d'(x) = m'x + n'
+\[
+ 	d'(x) = m'x + n'
 \]
 Comme $d$ et $d'$ sont orthogonales le produit de leur coefficient directeur est égal à 1, donc:
 \[
@@ -90,12 +91,14 @@ Comme $ H \in d$ et $H \in d'$, il résout le système suivant :
     \end{cases}
 \end{align}
 En remplaçant les valeurs dans l'équation \eqref{systeme}, on obtient :
+
 \begin{align}
 	\begin{cases}
-		& x_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1} + \left( y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a\right) \left( \dfrac{x_b - x_c}{y_b - y_c}\right)  \\
-    	& y_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1}
+		 x_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1} + \left( y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a\right) \left( \dfrac{x_b - x_c}{y_b - y_c}\right)  \\
+    	 y_h = \dfrac{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + y_b - \left( \dfrac{x_b - x_c}{y_b - y_c}\right) x_b + y_a + \left( \dfrac{y_b - y_c}{x_b - x_c}\right) x_a}{\left( \dfrac{x_b - x_c}{y_b - y_c}\right)^2 + 1}
 	\end{cases}
 \end{align}
+
 \subsection{Interpolation temporelle}
 
 \section{Détermination d'un segment}
