@@ -14,8 +14,38 @@ Java, activity, fragment, services, permissions
 \begin{multicols}{2}
 \begin{img}
   \includegraphics[scale=0.5]{img/archi.png}
-  \caption{Structure de l'application}
+  \caption{Architecture de l'application}
 \end{img}
+
+\begin{itemize}
+  \item app
+     \begin{itemize}
+       \item manifests
+       \begin{itemize}
+         \item AndroidManifest.xml
+       \end{itemize}
+       \item java
+       \begin{itemize}
+         \item fr.unicaen.varlef.gpsproject
+         \begin{itemize}
+           \item activity
+           \item dbmanager
+           \item fragment
+           \item model
+           \item util
+           \item xml
+         \end{itemize}
+       \end{itemize}
+       \item res
+       \begin{itemize}
+           \item drawable
+           \item layout
+           \item menu
+           \item values
+           \item xml
+         \end{itemize}
+     \end{itemize}
+\end{itemize}\bigskip
 
 \end{multicols}
 
@@ -26,12 +56,11 @@ Java, activity, fragment, services, permissions
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">	
 	<TextView
+		android:id="@+id/textView"
     	android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/textView"
+        android:layout_height="match_parent"        
         android:layout_weight="0.5"
         android:text="@string/temps" />
-                
     <fragment
         android:id="@+id/map_container"
         android:layout_width="fill_parent"

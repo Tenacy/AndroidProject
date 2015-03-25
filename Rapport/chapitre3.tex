@@ -14,7 +14,13 @@ Lors de implémentation du modèle, nous avions créé une classe Point permetta
 \subsection{Le diagramme de classe}
 Afin de résumer les parties précédentes, nous avons élaboré un diagramme de classes (Figure \ref{Diagramme de classes})
 \begin{img}
-  \includegraphics[scale=0.5]{img/DiagrammeDeClasse.png}
-  \caption{Diagramme de classes}
-  \label{Diagramme de classes}
+  \includegraphics[scale=0.6]{img/DiagrammeDeClasse.png}
+  \caption{\label{Diagramme de classes}}
+\end{img}
+
+\subsection{Le modèle conceptuel de données}
+Pour assurer la persistance des données autres que les données GPS, nous avons choisi de les stocker dans une base de données relationnelle. Le modèle conceptuel de données ci-dessous décrit les entités et leurs données que l'on à besoin de stocker. On retrouve donc naturellement une entité \verb!parcours! qui possède plusieurs entités \verb!trajet!. 
+\begin{img}
+  \includegraphics[scale=0.3]{img/bdd.png}
+  \caption{Modèle conceptuel de données}
 \end{img}
