@@ -4,6 +4,12 @@
 \usepackage[toc,page]{appendix}
 \usepackage[xindy]{glossaries}
 \usepackage{amsmath,amsfonts,amssymb}
+\usepackage{algorithm,algpseudocode}
+
+\algnewcommand{\Initialize}[1]{%
+  \State \textbf{Initialize:}
+  \Statex \hspace*{\algorithmicindent}\parbox[t]{.8\linewidth}{\raggedright #1}
+}
 \makeglossaries
 \begin{document}
 	\includepdf[pages={1,2,3}]{garde}	
@@ -30,7 +36,9 @@
 
 	\include{conclusion}
 	
+	\printglossaries
 	\include{glossaire}
+	\include{sources}	
 	\newpage
 	\appendix
 	\include{annexes}
