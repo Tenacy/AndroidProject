@@ -100,7 +100,17 @@ En remplaçant les valeurs dans l'équation \eqref{systeme}, on obtient :
 \end{align}
 
 \subsection{Interpolation temporelle}
+Après avoir récupérer les coordonnées du point $H$, nous pouvons calculer le rapport ($\theta$) entre la distance $BH$ et $HC$ et l'appliquer au temps établi pour parcourir la distance $BC$ ($\Delta_{BC}$) afin d'établir l'interpolation du temps au point $H$. Donc
+\[
+	t_H = \frac{distance(B,H)}{distance(B,C)}| t_B - t_C | 
+\]
+Nous pouvons alors comparer le temps mis pour atteindre $A$ et le temps mis pour atteindre $H$.
+\begin{align}
+\mbox{Si } t_H - t_A &<0 \mbox{ On est en avance.} \\
+			&>0 \mbox{ On est en retard.} \\
+			&=0 \mbox{ On est pareil.}
+\end{align}
 
 \section{Détermination d'un segment}
-\subsection{Les problèmes rencontrés}
 \subsection{L'algorithme}
+\subsection{Les problèmes rencontrés}
