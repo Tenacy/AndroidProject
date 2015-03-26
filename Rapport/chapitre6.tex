@@ -1,9 +1,9 @@
 \chapter{Développement Android}
 \section{Les différents composants d'Android}
-Google met à disposition des développeurs un kit de développement (SDK) complet et une API (interface de développement) très bien documenté pour développer des applications Android. Nous allons voir dans cette partie les bases du développement sous Android et l'architecture du projet.
+Google met à disposition des développeurs un kit de développement (SDK) complet et une API (interface de développement) très bien documenté pour développer des applications Android. Nous allons voir dans cette partie les bases du développement sous Android et ses différents composants.
 \subsection{Les activités}
 Les applications Android fonctionne avec ce que l'on appelle des activités (classe \verb!Activity!) et des fragments (\verb!Fragment!).
-Une Activité représente la totalité du contenu affiché à l'écran. Pour créer une nouvelle activité on créer donc une classe java qui va étendre la classe \verb!Activity!. Les activités ne peuvent échanger entre elles que des paramètres de types simples (booléens, chaines de caractères, entiers...). Pour pouvoir afficher le contenu souhaité dans une nouvelle activité nous passons donc à l'activité essentiellement les identifiants des objets à traiter sous forme d'entier.\bigskip
+Une Activité représente la totalité du contenu affiché à l'écran. Pour créer une nouvelle activité on implémente donc une classe java qui va étendre la classe \verb!Activity!. Les activités ne peuvent échanger entre elles que des paramètres de types simples (booléens, chaines de caractères, entiers...). Pour pouvoir afficher le contenu souhaité dans une nouvelle activité nous passons donc à l'activité essentiellement les identifiants des objets à traiter sous forme d'entier (par exemple l'identifiant du trajet à afficher).\bigskip
 
 Le diagramme ci-dessous explique le cycle de vie d'une activité avec les différentes méthodes appelées à chaque événement. Ce diagramme nous a été très utile pour comprendre la mécanique de transition entre les activités. En effet lorsque l'on instancie une nouvelle activité, la précédente se met dans une pile d'activités et continue à consommer des ressources du système. Il est donc plus que nécessaire de connaître le traitement à effectuer en fonction de chaque cas.
 
@@ -14,22 +14,22 @@ Le diagramme ci-dessous explique le cycle de vie d'une activité avec les diffé
 
 Les méthodes les plus importantes dans notre développement sont:\bigskip
  \begin{itemize}
- 	\item \verb!onCreate()! lancé au démarrage de l'activité. C'est ici que l'ont peux récupérer les valeurs passées en paramètre de l'activité et ainsi instancier les objets nécessaires.
- 	\item \verb!onRestart()! lancé lorsque l'utilisateur utilise la touche précédent de son smartphone. L'activité dans la pile d'activités déjà instancié une première fois doit alors vérifier les données à mettre à jour pour actualiser l'affichage.
+ 	\item \verb!onCreate()! lancé au démarrage de l'activité. C'est ici que l'on peux récupérer les valeurs passées en paramètre à l'activité et ainsi instancier les objets nécessaires.
+ 	\item \verb!onRestart()! lancé lorsque l'utilisateur utilise la touche précédent de son smartphone. L'activité dans la pile d'activités, déjà instancié une première fois, doit alors vérifier les données à mettre à jour pour actualiser l'affichage.
  \end{itemize}
 
 \subsection{Les fragments}
 Les fragments (classe \verb!Fragment!) sont des sous-activités qui peuvent être intégrés dans une activité (par exemple une liste ou une boite de dialogue). Ils possèdent le même cycle de vie que les activités à l'exception de deux méthodes supplémentaires:\bigskip
  
 \begin{itemize}
- 	\item \verb!onAttach()! appelé lorsque le fragment est attaché à une activité, juste avant la méthode \verb!onCreate()! ce qui lui permet en général de vérifier que l'activité est compatible et implémente bien les bonnes interfaces.
- 	\item \verb!onDetach()! appelé après la méthode \verb!onDestroy()!.
+ 	\item \verb!onAttach()! appelée lorsque le fragment est attaché à une activité, juste avant la méthode \verb!onCreate()! ce qui lui permet en général de vérifier que l'activité est compatible et implémente bien les bonnes interfaces.
+ 	\item \verb!onDetach()! appelée après la méthode \verb!onDestroy()!.
 \end{itemize}\bigskip
 
 Plusieurs fragments peuvent être attachés à une activité. Pour communiquer entre eux ils doivent impérativement passer par l'activité qui les contient à travers des méthodes de callback. Il est donc en général conseiller de définir des interfaces internes aux fragments que les activités qui sont amenés à les contenir doivent implémenter. 
 
 \subsection{Les ressources}
-Les ressources représentent toutes les données statiques que l'application va contenir. Elles sont accessibles à partir de n'importe quelle activité à l'aide d'une classe nommée \verb!R!. Cette classe est très spéciale. En effet c'est à la compilation du projet que cette classe est créée. Le système parcours alors toutes les ressources et créé une référence statique dans cette classe pour chacune d'entre elles.\bigskip
+Les ressources représentent toutes les données statiques que l'application va contenir. Elles sont accessibles à partir de n'importe quelle activité à l'aide d'une classe nommée \verb!R!. Cette classe est très spéciale. En effet c'est à la compilation du projet que cette classe est créée. Le système parcours alors toutes les ressources et insère une référence statique dans cette classe pour chacune d'entre elles.\bigskip
 Il existe plusieurs types de ressources :\bigskip
 
 \begin{itemize}
@@ -39,7 +39,7 @@ Il existe plusieurs types de ressources :\bigskip
 \end{itemize}\bigskip
 
 \subsubsection{Les layouts}
-Chaque activité et fragment peuvent être associés à un layout pour afficher des éléments graphiques à l'écran. Un layout est une ressources sous forme de fichier XML dans lequel on déclare les composants graphiques (objets \verb!View()!) à afficher. Pour afficher une donnée dans ce layout il faut, à partir de l'activité ou du fragment, récupérer l'objet \verb!View! adéquat et lui assigner la donnée qu'il doit contenir. \bigskip
+Chaque activité (et fragment) peut être associé à un layout pour afficher des éléments graphiques à l'écran. Un layout est une ressources sous forme de fichier XML dans lequel on déclare les composants graphiques (objets \verb!View()!) à afficher. Pour insérer une donnée dans ce layout il faut, à partir de l'activité ou du fragment, récupérer l'objet \verb!View! adéquat et lui assigner la donnée qu'il doit contenir. \bigskip
 
 Les principaux composants que l'on a utilisé dans nos layouts sont:\bigskip
 
@@ -82,45 +82,27 @@ L'android manifest est le fichier de configuration global. Ce fichier XML décla
 \end{itemize}\bigskip
 
 \section{Structure du projet}
-\bigskip
-\begin{multicols}{2}
+
+Tout au long de notre développement, nous avons essayé de séparer au maximum les différents composants de l'application pour obtenir un code propre et surtout réutilisable. On peut voir dans l'architecture ci-dessous comment sont organisés les fichiers. On a une partie java qui va contenir les différentes classes et une autre qui va contenir toutes les ressources.\bigskip
+
 \begin{img}
-  \includegraphics[scale=0.5]{img/archi.png}
+  \includegraphics[scale=0.6]{img/archi.png}
   \caption{Architecture de l'application}
 \end{img}
 
+Notre application suit le patron de conception MVC (Modèle, Vue Contrôleur). Les ressources représentent la vue, les activités et fragments représentent les contrôleurs et les packages restants représentent le modèle de l'application.\bigskip
+
+Décrivons rapidement les différents paquetages:\bigskip
+
 \begin{itemize}
-  \item app
-     \begin{itemize}
-       \item manifests
-       \begin{itemize}
-         \item AndroidManifest.xml
-       \end{itemize}
-       \item java
-       \begin{itemize}
-         \item fr.unicaen.varlef.gpsproject
-         \begin{itemize}
-           \item activity
-           \item dbmanager
-           \item fragment
-           \item model
-           \item util
-           \item xml
-         \end{itemize}
-       \end{itemize}
-       \item res
-       \begin{itemize}
-           \item drawable
-           \item layout
-           \item menu
-           \item values
-           \item xml
-         \end{itemize}
-     \end{itemize}
+ 	\item \verb!activity! contient toutes les activités de l'application
+ 	\item \verb!dbmanager! contient les classes de création et d'accès à la base de données
+ 	\item \verb!fragment! contient tous les fragments
+ 	\item \verb!model! contient les classes modèles (\verb!Parcours!, \verb!Trajet!)
+ 	\item \verb!util! contient des classes utilitaires qui permettent notamment de convertir les différentes données (par exemple de convertir des mètres par seconde en kilomètres par heure)
+ 	\item \verb!xml! contient toutes les classes nécessaires au stockage et à la lecture des données GPS dans les fichiers GPX
 \end{itemize}\bigskip
-
-\end{multicols}
-
+ 
 
 
 
