@@ -112,5 +112,23 @@ Nous pouvons alors comparer le temps mis pour atteindre $A$ et le temps mis pour
 \end{align}
 
 \section{Détermination d'un segment}
+\subsection{$H \in [BC]$}
+Dès lors que les coordonnées du point $H$ ont été trouvé, nous devons vérifier que $H$ appartient au segment $[BC]$. En effet, si la projection n'est pas située sur le bon segment, les résultats vont devenir incohérents. On admettra donc l'existence d'une méthode \verb!estSurSegment! permettant de vérifier que $H$ est bien compris sur le segment $[BC]$.
 \subsection{L'algorithme}
+Voyons maintenant l'algorithme permettant à partir d'un trajet d'établir la liste de ses points projetés sur le trajet de référence.
+\begin{algorithmic}
+\Function {CalculProjection}{Trajet $t_{act}$, Trajet $t_{ref}$}
+\Initialize{$i_{ref} \gets 0$\\$i_{act}\gets 0$\\$projections[t_{act}.size()]$\\$H\gets null$}
+\While{($i_{ref} < t_{ref}.size()-1$ and $i_{act} < t_{act}.size()$ )}
+	\State $H \gets calulProjection(t_{act}[i_{act}],t_{ref}[i_{ref}],t_{ref}[i_{ref}+1])$
+    \If{($estSurSegment(H, t_{ref}[i_{ref}], t_{ref}[i_{ref}+1])$)}
+    	\State $projection[i_{act}]\gets H$
+    	\State $i_{act}\gets i_{act}+1$
+   	\Else
+   		\State $i_{ref}\gets i_{ref}+1$
+    \EndIf
+
+\EndWhile
+\EndFunction
+\end{algorithmic}
 \subsection{Les problèmes rencontrés}
