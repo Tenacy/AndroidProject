@@ -32,22 +32,37 @@ public void addLocation(Location l) {
 
 \chapter{Les providers Android}
 \label{Annexe3}
-Accuracy	Power Usage	Technology
-20ft	High	Autonomous GPS, Provider: gps
-uses GPS chip on the device
-line of sight to the satellites
-need about 7 to get a fix
-takes a long time to get a fix
-doesn’t work around tall buildings
-200ft	Medium – Low	Assisted GPS (AGPS), Provider: network
-uses GPS chip on device, as well as assistance from the network (cellular network) to provide a fast initial fix
-very low power consumption
-very accurate
-works without any line of sight to the sky
-depends on carrier and phone supporting this (even if phone supports it, and network does not then this does not work)
-5300ft / 1mile	Low	CellID lookup/WiFi MACID lookup, Provider: network or passive
-very fast lock, and does not require GPS chip on device to be active
-requires no extra power at all
-has very low accuracy; sometimes can have better accuracy in populated and well mapped areas that have a lot of WiFi access points, and people who share their location with Google
+\begin{center}
+   \begin{tabular}{| c | c | l | }
+     \hline
+     Accuracy & Power Usage & Technology \\ \hline
+     20ft & High & Autonomous GPS, Provider: gps \\ 
+     && uses GPS chip on the device \\
+     && line of sight to the satellites \\
+     && need about 7 to get a fix \\
+     && takes a long time to get a fix \\
+     && doesn’t work around tall buildings \\ \hline
+ 
+     200ft & Medium & Assisted GPS (AGPS), Provider: network \\ 
+     && uses GPS chip on device, as well as assistance from the network to provide a fast initial fix \\
+	 && very low power consumption \\
+	 && very accurate \\
+	 && works without any line of sight to the sky \\
+	 && depends on carrier and phone supporting this \\ \hline
+    
+    1 mile & Low & CellID lookup/WiFi MACID lookup, Provider: network or passive \\
+     && very fast lock, and does not require GPS chip on device to be active \\
+	 && requires no extra power at all \\ 
+     && has very low accuracy \\
+     \hline
+   \end{tabular}
+ \end{center}
+	 	
+		
+
+		
+
+		
+
 \footnote{\href{http://developerlife.com/tutorials/?p=1375}{developerlife}}
 \end{appendices}
