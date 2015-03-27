@@ -1,7 +1,7 @@
 \chapter{La gestion des points}
 
 \section{Projection d'un point}
-Dans la partie \ref{capture de points}, nous verrons que la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
+Dans la partie \ref{capture de points}, nous verrons que la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des intervalles différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[BC]$ et permettre une estimation du temps établi pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
 
 \begin{img}  
 	\includegraphics[scale=1]{img/Trajet.png}
@@ -74,7 +74,7 @@ En remplaçant les valeurs dans l'équation \eqref{systeme}, on obtient :
 \end{align}
 
 \subsection{L'interpolation temporelle}
-Après avoir récupérer les coordonnées du point $H$, nous pouvons calculer le rapport ($\theta$) entre la distance $BH$ et $HC$ et l'appliquer au temps établi pour parcourir la distance $BC$ ($\Delta_{BC}$) afin d'établir l'interpolation du temps au point $H$. Donc
+Après avoir récupérer les coordonnées du projeté, nous pouvons calculer le rapport ($\theta$) entre la distance $BH$ et $HC$ et l'appliquer au temps établi pour parcourir la distance $BC$ ($\Delta_{BC}$) afin d'estimer l'interpolation du temps au point $H$. Donc
 \[
 	t_H = \frac{distance(B,H)}{distance(B,C)}| t_B - t_C | 
 \]
@@ -87,10 +87,10 @@ Nous pouvons alors comparer le temps mis pour atteindre $A$ et le temps mis pour
 
 \section{Recherche du segment pour effectuer la projection}
 \subsection{Vérification du projeté dans le segment}
-Dès lors que les coordonnées du point $H$ ont été trouvé, nous devons vérifier que $H$ appartient au segment $[BC]$. En effet, si la projection n'est pas située sur le bon segment, les résultats vont devenir incohérents. On admettra donc l'existence d'une méthode \verb!estSurSegment! permettant de vérifier que $H$ est bien compris sur le segment $[BC]$.
+Dès lors que les coordonnées du point $H$ sont trouvées, nous devons vérifier que $H$ appartient au segment $[BC]$. En effet, si la projection n'est pas située sur le bon segment, les résultats vont devenir incohérents. On admettra donc l'existence d'une méthode \verb!estSurSegment! permettant de vérifier que $H$ est bien compris sur le segment $[BC]$.
 
 \subsection{L'algorithme de détermination des projetés}
-Voyons maintenant l'algorithme permettant, à partir d'une liste de points géolocalisés, d'établir une liste de ses projetés sur une des points référencés.
+Voyons maintenant l'algorithme permettant, à partir d'une liste de points géolocalisés, d'établir une liste de ses projetés sur un des points référencés.
 \begin{algorithmic}
 \Function {CalculProjection}{Points[] $t_{act}$, Points[] $t_{ref}$}
 \Initialize{$i_{ref} \gets 0$\\$i_{act}\gets 0$\\$projections[t_{act}.size()]$\\$projete\gets null$}
@@ -108,13 +108,13 @@ Voyons maintenant l'algorithme permettant, à partir d'une liste de points géol
 \end{algorithmic}
 
 \section{Les problèmes rencontrés}
-Analytiquement parlant, tout semble fonctionner à merveille, mais lors de l'implémentation nous nous sommes rendu compte de plusieurs problèmes. 
+Analytiquement parlant, tout semble fonctionner correctement, mais lors de l'implémentation nous nous sommes rendu compte de plusieurs problèmes. 
 
 \subsubsection{Division par zéro}
 Lors du calcul des coordonnées du projeté, les points du segment ne doivent pas avoir la même latitude ou longitude. Si tel est le cas, ils seront alignés et leur différence d'abscisse ou d'ordonnée sera nulle. On diviserait alors par zéro lorsque l'on calcule les coefficients directeurs des droites.
 
 \subsubsection{Projeté impossible}
-Dans l'algorithme présenté précédemment, nous nous sommes rendu compte que si un des points ne pouvait pas être projeté, la suite de l'algorithme était complement inutile. Ce cas là est plus problématique que le précédent car nous pas trouvé de moyen simple de le résoudre.
+Dans l'algorithme présenté précédemment, nous nous sommes rendu compte que si un des points ne pouvait pas être projeté, la suite de l'algorithme était complètement inutile. Ce cas est plus problématique que le précédent car nous n’avons pas trouvé de moyen simple pour le résoudre.
 
 \subsubsection{Mauvais projeté}
 Nous nous sommes également rendu compte que dans certain cas, un point pouvait être projeté sur plusieurs segment. Dans ce cas la, le point peut être projeté sur un mauvais segment donnant ainsi des résultats aberrants en termes de temps. La comparaison est alors totalement inutile.
