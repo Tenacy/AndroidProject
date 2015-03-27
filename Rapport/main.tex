@@ -2,7 +2,6 @@
 
 \usepackage[lenny,pdfpages, bclogo]{MonPaquet}
 \usepackage[toc,page]{appendix}
-\usepackage[xindy]{glossaries}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{algorithm,algpseudocode}
 
@@ -10,7 +9,7 @@
   \State \textbf{Initialize:}
   \Statex \hspace*{\algorithmicindent}\parbox[t]{.8\linewidth}{\raggedright #1}
 }
-\makeglossaries
+
 \begin{document}
 	\includepdf[pages={1,2,3}]{garde}	
 	\include{remerciements}
@@ -21,12 +20,12 @@
 	\include{chapitre1}
 	\include{chapitre2}
 	
-	\part{Analyse et implémentations}
+	\part{Analyse du projet}
 	\include{chapitre3}
 	\include{chapitre4}
+	\include{chapitre5}
 	
 	\part{Détail sur la réalisation}
-	\include{chapitre5}
 	\include{chapitre6}
 	
 	\part{Bilan du projet}
@@ -35,8 +34,6 @@
 	\include{chapitre9}
 
 	\include{conclusion}
-	
-	\printglossaries
 	\include{glossaire}
 	\include{sources}	
 	\newpage
