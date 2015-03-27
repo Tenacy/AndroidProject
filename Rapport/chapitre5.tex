@@ -1,33 +1,7 @@
 \chapter{La gestion des points}
 
-\section{La capture de points sous Android}
-Sous Android, la localisation d'un appareil utilisant une puce GPS est rendue possible. Bien évidemment, plus la puce est performante plus la localisation de l’appareil sera aisée. La capture de points se fait grâce à trois fournisseurs (\textit{providers}) différents.
-
-\subsection{Les \textit{providers}}
-Nous parlerons ici uniquement des providers nécessaire au fonctionnement de notre application à savoir le \textit{NETWORK\_PROVIDER} et \textit{GPS\_PROVIDER} cependant un récapitulatif des providers est disponible à l'Annexe \ref{Annexe3}.
-
-\subsubsection{Le \textit{NETWORK\_PROVIDER}}
-Ce fournisseur détermine la position du l'appareil en fonction des antennes téléphoniques et des points d'accès au Wi-fi. Il a une précision d'environ 60 mètres. Mais fournis des points beaucoup plus rapidement que le GPS. Nous l'utilisons dans notre application le temps que la puce se synchronise avec le GPS.
-
-\subsubsection{Le \textit{GPS\_PROVIDER}}
-De tous les fournisseurs, celui-ci est de loin de plus précis puisqu'il permet de localiser un appareil avec une précision de 6 mètres. Malheureusement, pour se faire, la puce de l'appareil doit se connectée à un GPS est cela peut prendre beaucoup de temps. De plus, tant l'acquisition n'a pas été établie, aucun point ne sera fourni.
-
-\begin{note}
-L'utilisation du service de localisation sous Android nécessite des permissions que l'on doit ajouter au \textit{manifest} (Partie \ref{manifest}).
-\end{note}
-
-\subsection{Le LocationManager}
-\label{locationManager}
-Le \verb!LocationManager! représente le service de gestion de capture de points. C'est grâce à cette classe que la localisation de point peut se faire. Son fonctionnement est brièvement représenté par le diagramme \ref{Diagramme Location Manager}. Son instanciation se fait grâce aux services Android. Une fois l'instance obtenue, l'appel à la méthode \verb!requestLocationUpdates! doit être fait en précisant le \textit{provider} utilisé ainsi que deux variables et un \verb!LocationListener!. Les deux variables correspondent au minimum de temps et de distance nécessaire avant la capture d'un nouveau point. La valeur de ces variables est inversement proportionnelle à la consommation de la batterie. A chaque fois qu'un nouveau point est trouvé, le \verb!LocationListener!, qui écoute l'arrivée d'une nouvelle \verb!Location!, va pouvoir l'ajouter  à la liste des points du trajet. C'est également le \verb!LocationListener! qui va vérifier la bonne continuité du signal. En cas de modification, de perte ou de récupération du signal, un appel est effectué via les méthodes correspondantes.
-
-\begin{img}  
-	\includegraphics[scale=0.65]{img/LocationManager.png}
-	\caption{Fonctionnement du Location Manager}
-	\label{Diagramme Location Manager}
-\end{img}
-
 \section{Projection d'un point}
-Dans la partie précédente, nous avons vu que la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
+Dans la partie \ref{capture de points}, nous verrons que la capture de points n'est pas très précise. En effet, pour deux trajets réalisés sur le même parcours, on peut avoir des points situés à des endroits différents et pris à des dates différentes. La figure \ref{Représentation des trajets} représente cet écart lors de la capture des points. Afin de pouvoir comparer deux trajets, nous devons projeter les points (ici le point $A$) du trajet réalisé ($t_2$) sur le trajet de référence ($t_1$). Pour cela nous devons calculer les coordonnées du point $H$ pour déterminer le rapport entre $[BH]$ et $[CH]$ et permettre une estimation sur le temps établit pour atteindre le point $A$ sur le trajet $t_1$. Nous pourrons ainsi comparer les temps mis pour atteindre les points $A$ sur $t_2$ et $H$ sur $t_1$.
 
 \begin{img}  
 	\includegraphics[scale=1]{img/Trajet.png}
@@ -35,7 +9,7 @@ Dans la partie précédente, nous avons vu que la capture de points n'est pas tr
 	\label{Représentation des trajets}
 \end{img}
 
-\subsection{Calcul des coordonnées de H}
+\subsection{Détermination des coordonnées du projeté}
 On pose trois points $ A(x_a,y_a) $, $ B(x_b,y_b) $ et $ C(x_c,y_c) $ et nous cherchons à calculer les coordonnées de $ H(x_h,y_h) $ (Figure \ref{Représentation des trajets}).
 Pour ce faire, nous devons commencer par calculer l'équation de la droite $ d $ passant par les points $B$ et $C$.
 On pose donc : 
@@ -99,7 +73,7 @@ En remplaçant les valeurs dans l'équation \eqref{systeme}, on obtient :
 	\end{cases}
 \end{align}
 
-\subsection{Interpolation temporelle}
+\subsection{L'interpolation temporelle}
 Après avoir récupérer les coordonnées du point $H$, nous pouvons calculer le rapport ($\theta$) entre la distance $BH$ et $HC$ et l'appliquer au temps établi pour parcourir la distance $BC$ ($\Delta_{BC}$) afin d'établir l'interpolation du temps au point $H$. Donc
 \[
 	t_H = \frac{distance(B,H)}{distance(B,C)}| t_B - t_C | 
@@ -111,18 +85,19 @@ Nous pouvons alors comparer le temps mis pour atteindre $A$ et le temps mis pour
 			&=0 \mbox{ On est pareil.}
 \end{align}
 
-\section{Détermination d'un segment}
-\subsection{$H \in [BC]$}
+\section{Recherche du segment pour effectuer la projection}
+\subsection{Vérification du projeté dans le segment}
 Dès lors que les coordonnées du point $H$ ont été trouvé, nous devons vérifier que $H$ appartient au segment $[BC]$. En effet, si la projection n'est pas située sur le bon segment, les résultats vont devenir incohérents. On admettra donc l'existence d'une méthode \verb!estSurSegment! permettant de vérifier que $H$ est bien compris sur le segment $[BC]$.
-\subsection{L'algorithme}
-Voyons maintenant l'algorithme permettant à partir d'un trajet d'établir la liste de ses points projetés sur le trajet de référence.
+
+\subsection{L'algorithme de détermination des projetés}
+Voyons maintenant l'algorithme permettant, à partir d'une liste de points géolocalisés, d'établir une liste de ses projetés sur une des points référencés.
 \begin{algorithmic}
-\Function {CalculProjection}{Trajet $t_{act}$, Trajet $t_{ref}$}
-\Initialize{$i_{ref} \gets 0$\\$i_{act}\gets 0$\\$projections[t_{act}.size()]$\\$H\gets null$}
+\Function {CalculProjection}{Points[] $t_{act}$, Points[] $t_{ref}$}
+\Initialize{$i_{ref} \gets 0$\\$i_{act}\gets 0$\\$projections[t_{act}.size()]$\\$projete\gets null$}
 \While{($i_{ref} < t_{ref}.size()-1$ and $i_{act} < t_{act}.size()$ )}
-	\State $H \gets calulProjection(t_{act}[i_{act}],t_{ref}[i_{ref}],t_{ref}[i_{ref}+1])$
-    \If{($estSurSegment(H, t_{ref}[i_{ref}], t_{ref}[i_{ref}+1])$)}
-    	\State $projection[i_{act}]\gets H$
+	\State $projete \gets calulProjection(t_{act}[i_{act}],t_{ref}[i_{ref}],t_{ref}[i_{ref}+1])$
+    \If{($estSurSegment(projete, t_{ref}[i_{ref}], t_{ref}[i_{ref}+1])$)}
+    	\State $projection[i_{act}]\gets projete$
     	\State $i_{act}\gets i_{act}+1$
    	\Else
    		\State $i_{ref}\gets i_{ref}+1$
@@ -131,4 +106,15 @@ Voyons maintenant l'algorithme permettant à partir d'un trajet d'établir la li
 \EndWhile
 \EndFunction
 \end{algorithmic}
-\subsection{Les problèmes rencontrés}
+
+\section{Les problèmes rencontrés}
+Analytiquement parlant, tout semble fonctionner à merveille, mais lors de l'implémentation nous nous sommes rendu compte de plusieurs problèmes. 
+
+\subsubsection{Division par zéro}
+Lors du calcul des coordonnées du projeté, les points du segment ne doivent pas avoir la même latitude ou longitude. Si tel est le cas, ils seront alignés et leur différence d'abscisse ou d'ordonnée sera nulle. On diviserait alors par zéro lorsque l'on calcule les coefficients directeurs des droites.
+
+\subsubsection{Projeté impossible}
+Dans l'algorithme présenté précédemment, nous nous sommes rendu compte que si un des points ne pouvait pas être projeté, la suite de l'algorithme était complement inutile. Ce cas là est plus problématique que le précédent car nous pas trouvé de moyen simple de le résoudre.
+
+\subsubsection{Mauvais projeté}
+Nous nous sommes également rendu compte que dans certain cas, un point pouvait être projeté sur plusieurs segment. Dans ce cas la, le point peut être projeté sur un mauvais segment donnant ainsi des résultats aberrants en termes de temps. La comparaison est alors totalement inutile.
